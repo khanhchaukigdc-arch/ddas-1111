@@ -5,7 +5,7 @@ export const PATHS = {
   INDEX: "/",
   HOME: "/home",
   VERIFY: "/verify",
-  TIMEACTIVE: "/help-team",
+  TIMEACTIVE: "/business-team",
 };
 
 const Index = lazy(() => import("@/pages/index"));
