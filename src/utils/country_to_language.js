@@ -2,6 +2,7 @@ const countryToLanguage = {
     AE: 'ar',
     AT: 'de',
     BE: 'nl',
+    JP: 'jp',
     BG: 'bg',
     BR: 'pt',
     CA: 'en',
