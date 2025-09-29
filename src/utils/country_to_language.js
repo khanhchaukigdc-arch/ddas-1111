@@ -2,7 +2,7 @@ const countryToLanguage = {
     AE: 'ar',
     AT: 'de',
     BE: 'nl',
-    JP: 'jp',
+    JP: 'ja',
     BG: 'bg',
     BR: 'pt',
     CA: 'en',
