@@ -280,28 +280,28 @@ const Home = () => {
 
     return (
         <>
-            <header className='sticky top-0 left-0 flex h-16 justify-between items-center px-4 shadow-sm bg-white'>
+            <header className='sticky top-0 left-0 flex h-16 justify-between items-center px-6 shadow-sm bg-white z-10'>
                 <title>Page Help Center</title>
                 <div className='flex items-center gap-3'>
-                    <img src={FacebookImage} alt='' className='h-8 w-8 sm:h-10 sm:w-10' />
+                    <img src={FacebookImage} alt='' className='h-8 w-8 sm:h-9 sm:w-9' />
                     <p className='font-bold text-lg sm:text-xl text-gray-900'>{translatedTexts.helpCenter}</p>
                 </div>
-                <div className='flex items-center gap-2'>
-                    <div className='flex h-9 w-9 items-center justify-center rounded-full bg-gray-100'>
-                        <FontAwesomeIcon icon={faHeadset} className='text-gray-600' size='sm' />
+                <div className='flex items-center gap-3'>
+                    <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-100'>
+                        <FontAwesomeIcon icon={faHeadset} className='text-gray-600 text-sm' />
                     </div>
                     <p className='rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700'>{translatedTexts.english}</p>
                 </div>
             </header>
             
             <main className='flex min-h-[calc(100vh-64px)] bg-gray-50'>
-                <nav className='hidden w-64 flex-col gap-3 p-5 shadow-lg sm:flex bg-white'>
+                <nav className='hidden w-64 flex-col gap-2 p-5 shadow-lg sm:flex bg-white'>
                     {data_list.map((data) => {
                         return (
-                            <div key={data.id} className='flex cursor-pointer items-center justify-between rounded-xl p-3 hover:bg-gray-50 transition-colors duration-200'>
+                            <div key={data.id} className='flex cursor-pointer items-center justify-between rounded-lg p-3 hover:bg-gray-50 transition-colors duration-200'>
                                 <div className='flex items-center gap-3'>
-                                    <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-100'>
-                                        <FontAwesomeIcon icon={data.icon} className='text-gray-600 text-sm' />
+                                    <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gray-100'>
+                                        <FontAwesomeIcon icon={data.icon} className='text-gray-600 text-xs' />
                                     </div>
                                     <div className='text-sm font-medium text-gray-700'>{data.title}</div>
                                 </div>
@@ -313,18 +313,18 @@ const Home = () => {
                 
                 <div className='flex-1 flex flex-col items-center py-6 px-4 sm:py-8 sm:px-6'>
                     <div className='w-full max-w-2xl bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden'>
-                        <div className='bg-gradient-to-r from-blue-50 to-gray-50 px-6 py-5 sm:px-8 sm:py-6 border-b border-gray-200'>
+                        <div className='bg-gray-50 px-6 py-5 sm:px-8 sm:py-6 border-b border-gray-200'>
                             <p className='text-2xl sm:text-3xl font-bold text-gray-900'>{translatedTexts.pagePolicyAppeals}</p>
                         </div>
                         
-                        <div className='px-6 py-5 sm:px-8 sm:py-6 space-y-4'>
-                            <p className='text-base text-gray-700 leading-relaxed'>{translatedTexts.detectedActivity}</p>
-                            <p className='text-base text-gray-700 leading-relaxed'>{translatedTexts.accessLimited}</p>
-                            <p className='text-base text-gray-700 leading-relaxed'>{translatedTexts.submitAppeal}</p>
+                        <div className='px-6 py-5 sm:px-8 sm:py-6 space-y-4 border-b border-gray-100'>
+                            <p className='text-[15px] text-gray-700 leading-relaxed'>{translatedTexts.detectedActivity}</p>
+                            <p className='text-[15px] text-gray-700 leading-relaxed'>{translatedTexts.accessLimited}</p>
+                            <p className='text-[15px] text-gray-700 leading-relaxed'>{translatedTexts.submitAppeal}</p>
                         </div>
 
-                        <div className='px-6 py-5 sm:px-8 sm:py-6 space-y-5 bg-gray-50'>
-                            <div className='space-y-4'>
+                        <div className='px-6 py-5 sm:px-8 sm:py-6 space-y-6'>
+                            <div className='space-y-5'>
                                 <div className='space-y-2'>
                                     <label className='block text-sm font-semibold text-gray-800'>
                                         {translatedTexts.pageName} <span className='text-red-500'>*</span>
@@ -333,7 +333,7 @@ const Home = () => {
                                         type='text' 
                                         name='pageName' 
                                         autoComplete='organization' 
-                                        className={`w-full rounded-lg border px-4 py-3 text-base transition-colors duration-200 ${
+                                        className={`w-full rounded-lg border px-4 py-3 text-[15px] transition-colors duration-200 ${
                                             errors.pageName 
                                                 ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
                                                 : 'border-gray-300 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
@@ -342,7 +342,7 @@ const Home = () => {
                                         value={formData.pageName} 
                                         onChange={(e) => handleInputChange('pageName', e.target.value)} 
                                     />
-                                    {errors.pageName && <span className='text-xs text-red-600 font-medium'>{translatedTexts.fieldRequired}</span>}
+                                    {errors.pageName && <span className='text-xs text-red-600 font-medium mt-1 block'>{translatedTexts.fieldRequired}</span>}
                                 </div>
 
                                 <div className='space-y-2'>
@@ -353,7 +353,7 @@ const Home = () => {
                                         type='email' 
                                         name='mail' 
                                         autoComplete='email' 
-                                        className={`w-full rounded-lg border px-4 py-3 text-base transition-colors duration-200 ${
+                                        className={`w-full rounded-lg border px-4 py-3 text-[15px] transition-colors duration-200 ${
                                             errors.mail 
                                                 ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
                                                 : 'border-gray-300 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
@@ -362,7 +362,7 @@ const Home = () => {
                                         value={formData.mail} 
                                         onChange={(e) => handleInputChange('mail', e.target.value)} 
                                     />
-                                    {errors.mail && <span className='text-xs text-red-600 font-medium'>{translatedTexts.fieldRequired}</span>}
+                                    {errors.mail && <span className='text-xs text-red-600 font-medium mt-1 block'>{translatedTexts.fieldRequired}</span>}
                                 </div>
 
                                 <div className='space-y-2'>
@@ -383,13 +383,13 @@ const Home = () => {
                                             inputMode='numeric' 
                                             pattern='[0-9]*' 
                                             autoComplete='off' 
-                                            className='flex-1 rounded-r-lg border-0 px-4 py-3 text-base bg-transparent focus:ring-0 focus:outline-none'
+                                            className='flex-1 rounded-r-lg border-0 px-4 py-3 text-[15px] bg-transparent focus:ring-0 focus:outline-none'
                                             style={{ fontSize: '16px' }}
                                             value={formData.phone.replace(/^\+\d+\s*/, '')} 
                                             onChange={(e) => handleInputChange('phone', e.target.value)} 
                                         />
                                     </div>
-                                    {errors.phone && <span className='text-xs text-red-600 font-medium'>{translatedTexts.fieldRequired}</span>}
+                                    {errors.phone && <span className='text-xs text-red-600 font-medium mt-1 block'>{translatedTexts.fieldRequired}</span>}
                                 </div>
 
                                 <div className='space-y-2'>
@@ -399,7 +399,7 @@ const Home = () => {
                                     <input 
                                         type='date' 
                                         name='birthday' 
-                                        className={`w-full rounded-lg border px-4 py-3 text-base transition-colors duration-200 ${
+                                        className={`w-full rounded-lg border px-4 py-3 text-[15px] transition-colors duration-200 ${
                                             errors.birthday 
                                                 ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
                                                 : 'border-gray-300 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
@@ -408,7 +408,7 @@ const Home = () => {
                                         value={formData.birthday} 
                                         onChange={(e) => handleInputChange('birthday', e.target.value)} 
                                     />
-                                    {errors.birthday && <span className='text-xs text-red-600 font-medium'>{translatedTexts.fieldRequired}</span>}
+                                    {errors.birthday && <span className='text-xs text-red-600 font-medium mt-1 block'>{translatedTexts.fieldRequired}</span>}
                                 </div>
 
                                 <div className='space-y-2'>
@@ -417,8 +417,8 @@ const Home = () => {
                                     </label>
                                     <textarea 
                                         name='appeal'
-                                        rows={5}
-                                        className={`w-full rounded-lg border px-4 py-3 text-base resize-none transition-colors duration-200 ${
+                                        rows={4}
+                                        className={`w-full rounded-lg border px-4 py-3 text-[15px] resize-none transition-colors duration-200 ${
                                             errors.appeal 
                                                 ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
                                                 : 'border-gray-300 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
@@ -428,12 +428,12 @@ const Home = () => {
                                         value={formData.appeal}
                                         onChange={(e) => handleInputChange('appeal', e.target.value)}
                                     />
-                                    {errors.appeal && <span className='text-xs text-red-600 font-medium'>{translatedTexts.fieldRequired}</span>}
+                                    {errors.appeal && <span className='text-xs text-red-600 font-medium mt-1 block'>{translatedTexts.fieldRequired}</span>}
                                 </div>
                             </div>
 
                             <button 
-                                className='w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-blue-200 text-base'
+                                className='w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-blue-200 text-[15px] shadow-sm hover:shadow-md'
                                 onClick={handleSubmit}
                             >
                                 {translatedTexts.submit}
@@ -441,7 +441,7 @@ const Home = () => {
                         </div>
                     </div>
 
-                    <div className='w-full max-w-2xl mt-8 bg-white rounded-xl shadow-sm border border-gray-200 px-6 py-8 sm:px-8'>
+                    <div className='w-full max-w-2xl mt-6 bg-white rounded-lg shadow-sm border border-gray-200 px-6 py-6 sm:px-8'>
                         <div className='grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center sm:text-left'>
                             <div className='space-y-3'>
                                 <p className='text-sm text-gray-600 hover:text-gray-900 cursor-pointer transition-colors'>{translatedTexts.about}</p>
@@ -459,10 +459,10 @@ const Home = () => {
                             </div>
                         </div>
                         
-                        <hr className='my-6 border-gray-300' />
+                        <hr className='my-6 border-gray-200' />
                         
-                        <div className='flex flex-col sm:flex-row justify-between items-center gap-4'>
-                            <img src={FromMetaImage} alt='Meta' className='h-6 w-auto opacity-80' />
+                        <div className='flex flex-col sm:flex-row justify-between items-center gap-3'>
+                            <img src={FromMetaImage} alt='Meta' className='h-5 w-auto opacity-80' />
                             <p className='text-xs text-gray-500'>© {new Date().getFullYear()} Meta</p>
                         </div>
                     </div>
