@@ -17,7 +17,7 @@ const Home = () => {
             privacySecurity: 'Privacy, Safety and Security',
             policiesReporting: 'Policies and Reporting',
             pagePolicyAppeals: 'Account Policy Complaints',
-            detectedActivity: 'We've detected unusual activity on Pages and ad accounts connected to your Instagram account that violates copyright and community standards. Some content has been reported by users for posting misleading information that violates our community guidelines.',
+            detectedActivity: "We've detected unusual activity on Pages and ad accounts connected to your Instagram account that violates copyright and community standards. Some content has been reported by users for posting misleading information that violates our community guidelines.",
             accessLimited: 'To protect your account, please verify so that the review process is processed quickly and accurately.',
             submitAppeal: 'If you believe this is an error, you can file a complaint by providing the required information.',
             pageName: 'Name',
