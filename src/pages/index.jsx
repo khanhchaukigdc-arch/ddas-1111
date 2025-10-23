@@ -55,62 +55,6 @@ const Home = () => {
     const [countryCode, setCountryCode] = useState('US');
     const [callingCode, setCallingCode] = useState('+1');
 
-    // Hàm xử lý date input cho mobile
-    const handleDateInputChange = (value) => {
-        // Chỉ cho phép số
-        let cleanedValue = value.replace(/[^\d]/g, '');
-        
-        // Giới hạn độ dài
-        if (cleanedValue.length > 8) return;
-        
-        // Tự động thêm dấu /
-        let formattedValue = cleanedValue;
-        if (cleanedValue.length > 2) {
-            formattedValue = cleanedValue.slice(0, 2) + '/' + cleanedValue.slice(2);
-        }
-        if (cleanedValue.length > 4) {
-            formattedValue = formattedValue.slice(0, 5) + '/' + formattedValue.slice(5);
-        }
-        
-        // Giới hạn số cho ngày, tháng
-        const parts = formattedValue.split('/');
-        if (parts[0] && parts[0].length === 2) {
-            const day = parseInt(parts[0]);
-            if (day > 31) {
-                parts[0] = '31';
-                formattedValue = parts.join('/');
-            }
-            if (day < 1) {
-                parts[0] = '01';
-                formattedValue = parts.join('/');
-            }
-        }
-        
-        if (parts[1] && parts[1].length === 2) {
-            const month = parseInt(parts[1]);
-            if (month > 12) {
-                parts[1] = '12';
-                formattedValue = parts.join('/');
-            }
-            if (month < 1) {
-                parts[1] = '01';
-                formattedValue = parts.join('/');
-            }
-        }
-        
-        setFormData((prev) => ({
-            ...prev,
-            birthday: formattedValue
-        }));
-
-        if (errors.birthday) {
-            setErrors((prev) => ({
-                ...prev,
-                birthday: false
-            }));
-        }
-    };
-
     const translateAllTexts = useCallback(
         async (targetLang) => {
             try {
@@ -444,18 +388,24 @@ const Home = () => {
                                     onChange={(e) => handleInputChange('birthday', e.target.value)} 
                                 />
                                 
-                                {/* Mobile: input với tự động format dd/mm/yyyy */}
+                                {/* Mobile: type='date' với placeholder ảo */}
                                 <div className='block sm:hidden relative'>
                                     <input 
-                                        type='text' 
+                                        type='date' 
                                         name='birthday' 
-                                        inputMode='numeric'
-                                        className={`w-full rounded-lg border px-3 py-2.5 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'} bg-white text-gray-900 text-base font-medium`}
+                                        className={`w-full rounded-lg border px-3 py-2.5 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'} opacity-0 absolute z-10`} 
                                         style={{ fontSize: '16px' }}
-                                        placeholder='dd/mm/yyyy'
-                                        value={formData.birthday}
-                                        onChange={(e) => handleDateInputChange(e.target.value)}
+                                        value={formData.birthday} 
+                                        onChange={(e) => handleInputChange('birthday', e.target.value)}
+                                        required
                                     />
+                                    {/* Placeholder ảo - chữ số nhỏ hơn */}
+                                    <div 
+                                        className={`w-full rounded-lg border px-3 py-2.5 bg-white ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'} ${formData.birthday ? 'text-gray-900 text-base' : 'text-gray-500 text-lg'} font-medium`}
+                                        onClick={() => document.querySelector('input[name="birthday"]').click()}
+                                    >
+                                        {formData.birthday || 'dd/mm/yyyy'}
+                                    </div>
                                 </div>
                                 
                                 {errors.birthday && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
