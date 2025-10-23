@@ -401,9 +401,9 @@ const Home = () => {
                                 {errors.appeal && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
 
-                            {/* NÚT SUBMIT VỪA PHẢI */}
+                            {/* NÚT SUBMIT NHỎ HƠN */}
                             <button 
-                                className='w-full rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 text-base font-semibold transition-colors duration-200 mt-2'
+                                className='w-fit rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm font-medium transition-colors duration-200 mt-1'
                                 onClick={handleSubmit}
                             >
                                 {translatedTexts.submit}
