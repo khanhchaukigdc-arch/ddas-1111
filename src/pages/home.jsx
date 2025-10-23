@@ -54,23 +54,52 @@ const Home = () => {
     const [translatedTexts, setTranslatedTexts] = useState(defaultTexts);
     const [countryCode, setCountryCode] = useState('US');
     const [callingCode, setCallingCode] = useState('+1');
-    const [dateDisplay, setDateDisplay] = useState('__/__/____');
+    const [dateDisplay, setDateDisplay] = useState('dd/mm/yyyy');
+    const [isDateFocused, setIsDateFocused] = useState(false);
     const dateInputRef = useRef(null);
 
-    // Hàm xử lý date input cho mobile với mask cố định
+    // Hàm chuyển đổi date thành format hiển thị
+    const formatDateForDisplay = (dateStr) => {
+        if (!dateStr) return 'dd/mm/yyyy';
+        
+        // Chuyển từ format yyyy-mm-dd (của input date) sang dd/mm/yyyy
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+        return dateStr;
+    };
+
+    // Hàm chuyển đổi từ dd/mm/yyyy sang yyyy-mm-dd
+    const formatDateForStorage = (dateStr) => {
+        if (!dateStr || dateStr === 'dd/mm/yyyy') return '';
+        
+        const parts = dateStr.split('/');
+        if (parts.length === 3 && parts[0] !== 'dd' && parts[1] !== 'mm' && parts[2] !== 'yyyy') {
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
+        return '';
+    };
+
+    // Hàm xử lý date input cho mobile với mask
     const handleDateInputChange = (value, cursorPosition) => {
+        // Nếu đang hiển thị placeholder, chuyển sang mask
+        if (dateDisplay === 'dd/mm/yyyy') {
+            setDateDisplay('__/__/____');
+            return;
+        }
+
         // Chỉ lấy ký tự số từ input
         const newChar = value.replace(/[^0-9]/g, '');
         
         if (!newChar) return; // Không có ký tự số mới
         
-        // Chuyển dateDisplay thành mảng để xử lý
         let dateArray = dateDisplay.split('');
         
-        // Tìm vị trí số tiếp theo cần điền
+        // Tìm vị trí số tiếp theo cần điền (bỏ qua dấu /)
         let nextPosition = -1;
-        for (let i = 0; i < dateArray.length; i++) {
-            if (dateArray[i] === '_' && i >= cursorPosition) {
+        for (let i = cursorPosition; i < dateArray.length; i++) {
+            if (dateArray[i] === '_') {
                 nextPosition = i;
                 break;
             }
@@ -89,16 +118,31 @@ const Home = () => {
         if (nextPosition !== -1) {
             // Điền số vào vị trí trống
             dateArray[nextPosition] = newChar;
-            setDateDisplay(dateArray.join(''));
+            const newDisplay = dateArray.join('');
+            setDateDisplay(newDisplay);
             
-            // Cập nhật formData (chỉ lấy số, bỏ dấu _)
-            const formattedDate = dateArray.join('')
-                .replace(/_/g, '')
-                .replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
-            setFormData(prev => ({
-                ...prev,
-                birthday: formattedDate
-            }));
+            // Cập nhật formData nếu đã điền đủ
+            if (!newDisplay.includes('_')) {
+                const formattedDate = newDisplay.replace(/_/g, '');
+                const storageDate = `${formattedDate.slice(4,8)}-${formattedDate.slice(2,4)}-${formattedDate.slice(0,2)}`;
+                setFormData(prev => ({
+                    ...prev,
+                    birthday: storageDate
+                }));
+            }
+            
+            // Tự động chuyển đến ô tiếp theo
+            setTimeout(() => {
+                if (dateInputRef.current) {
+                    let nextPos = nextPosition + 1;
+                    while (nextPos < newDisplay.length && newDisplay[nextPos] !== '_') {
+                        nextPos++;
+                    }
+                    if (nextPos < newDisplay.length) {
+                        dateInputRef.current.setSelectionRange(nextPos, nextPos);
+                    }
+                }
+            }, 0);
         }
 
         if (errors.birthday) {
@@ -117,7 +161,7 @@ const Home = () => {
             let dateArray = dateDisplay.split('');
             let cursorPosition = e.target.selectionStart;
             
-            // Tìm vị trí số phía trước để xóa
+            // Tìm vị trí số phía trước để xóa (bỏ qua dấu /)
             let deletePosition = -1;
             for (let i = cursorPosition - 1; i >= 0; i--) {
                 if (dateArray[i] !== '_' && dateArray[i] !== '/') {
@@ -131,13 +175,13 @@ const Home = () => {
                 setDateDisplay(dateArray.join(''));
                 
                 // Cập nhật formData
-                const formattedDate = dateArray.join('')
-                    .replace(/_/g, '')
-                    .replace(/(\d{2})(\d{2})(\d{4})/, '$1/$2/$3');
-                setFormData(prev => ({
-                    ...prev,
-                    birthday: formattedDate
-                }));
+                const newDisplay = dateArray.join('');
+                if (newDisplay.includes('_')) {
+                    setFormData(prev => ({
+                        ...prev,
+                        birthday: ''
+                    }));
+                }
                 
                 // Đặt cursor về vị trí sau khi xóa
                 setTimeout(() => {
@@ -149,7 +193,34 @@ const Home = () => {
         }
     };
 
-    // Hàm xử lý click để đặt cursor đúng vị trí
+    // Hàm xử lý focus
+    const handleDateFocus = () => {
+        setIsDateFocused(true);
+        if (dateDisplay === 'dd/mm/yyyy') {
+            setDateDisplay('__/__/____');
+        }
+        setTimeout(() => {
+            if (dateInputRef.current) {
+                // Đặt cursor ở vị trí đầu tiên
+                dateInputRef.current.setSelectionRange(0, 0);
+            }
+        }, 0);
+    };
+
+    // Hàm xử lý blur
+    const handleDateBlur = () => {
+        setIsDateFocused(false);
+        // Nếu chưa nhập gì hoặc toàn bộ là gạch dưới, quay lại placeholder
+        if (dateDisplay === '__/__/____' || !dateDisplay.replace(/_/g, '').replace(/\//g, '')) {
+            setDateDisplay('dd/mm/yyyy');
+            setFormData(prev => ({
+                ...prev,
+                birthday: ''
+            }));
+        }
+    };
+
+    // Hàm xử lý click để chọn vị trí
     const handleDateClick = (e) => {
         const input = e.target;
         const cursorPosition = e.target.selectionStart;
@@ -163,34 +234,9 @@ const Home = () => {
             }
         }
         
-        // Nếu không tìm thấy phía sau, tìm phía trước
-        if (nextEmptyPosition === -1) {
-            for (let i = cursorPosition - 1; i >= 0; i--) {
-                if (dateDisplay[i] === '_') {
-                    nextEmptyPosition = i;
-                    break;
-                }
-            }
-        }
-        
         if (nextEmptyPosition !== -1) {
             input.setSelectionRange(nextEmptyPosition, nextEmptyPosition);
         }
-    };
-
-    // Hàm xử lý focus để đặt cursor đúng vị trí
-    const handleDateFocus = (e) => {
-        const input = e.target;
-        
-        // Tìm vị trí số trống đầu tiên
-        let firstEmptyPosition = dateDisplay.indexOf('_');
-        if (firstEmptyPosition === -1) {
-            firstEmptyPosition = dateDisplay.length;
-        }
-        
-        setTimeout(() => {
-            input.setSelectionRange(firstEmptyPosition, firstEmptyPosition);
-        }, 0);
     };
 
     const translateAllTexts = useCallback(
@@ -323,6 +369,15 @@ const Home = () => {
                 ...prev,
                 [field]: finalValue
             }));
+        } else if (field === 'birthday') {
+            setFormData((prev) => ({
+                ...prev,
+                [field]: value
+            }));
+            // Cập nhật display nếu là desktop
+            if (window.innerWidth >= 640) {
+                setDateDisplay(formatDateForDisplay(value));
+            }
         } else {
             setFormData((prev) => ({
                 ...prev,
@@ -526,7 +581,7 @@ const Home = () => {
                                     onChange={(e) => handleInputChange('birthday', e.target.value)} 
                                 />
                                 
-                                {/* Mobile: input với mask cố định */}
+                                {/* Mobile: input với mask */}
                                 <div className='block sm:hidden relative'>
                                     <input 
                                         ref={dateInputRef}
@@ -543,7 +598,7 @@ const Home = () => {
                                         onKeyDown={handleDateKeyDown}
                                         onClick={handleDateClick}
                                         onFocus={handleDateFocus}
-                                        onBlur={handleDateFocus}
+                                        onBlur={handleDateBlur}
                                     />
                                 </div>
                                 
