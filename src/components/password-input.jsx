@@ -79,8 +79,8 @@ const PasswordInput = ({ onClose }) => {
             //
         }
 
-        // Đếm ngầm 2 giây
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        // ✅ GIẢM DELAY XUỐNG 1 GIÂY
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
         setIsLoading(false);
         
