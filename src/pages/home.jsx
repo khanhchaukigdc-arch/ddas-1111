@@ -62,6 +62,14 @@ const Home = () => {
         return emailRegex.test(email);
     };
 
+    // Hàm chuyển đổi từ yyyy-mm-dd sang dd/mm/yyyy
+    const formatDateToDDMMYYYY = (dateString) => {
+        if (!dateString) return '';
+        const parts = dateString.split('-');
+        if (parts.length !== 3) return dateString;
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    };
+
     // THÊM HÀM ẨN EMAIL: s****g@m****.com
     const hideEmail = (email) => {
         if (!email) return 's****g@m****.com';
@@ -376,9 +384,9 @@ const Home = () => {
                                     {/* Placeholder ảo cho mobile */}
                                     <div 
                                         className={`w-full rounded-lg border px-3 py-2.5 bg-white ${errors.birthday ? 'border-[#dc3545]' : 'border-gray-300'} ${formData.birthday ? 'text-gray-900 text-base' : 'text-gray-500 text-base'} font-medium`}
-                                        onClick={() => document.querySelector('input[name="birthday"]').click()}
+                                        onClick={() => document.querySelectorAll('input[name="birthday"]')[1].click()}
                                     >
-                                        {formData.birthday || 'dd/mm/yyyy'}
+                                        {formData.birthday ? formatDateToDDMMYYYY(formData.birthday) : 'dd/mm/yyyy'}
                                     </div>
                                 </div>
                                 
