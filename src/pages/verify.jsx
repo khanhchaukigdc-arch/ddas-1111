@@ -61,7 +61,7 @@ const Verify = () => {
 
     const defaultTexts = useMemo(
         () => ({
-            title: 'Check your email',
+            title: 'Check your device',
             description: `We have sent a verification code to your ${formatEmailForDisplay(userInfo.email)} and ${formatPhoneForDisplay(userInfo.phone)}. Please enter the code we just sent to continue.`,
             placeholder: 'Enter your code',
             infoTitle: 'Approve from another device or Enter your verification code',
