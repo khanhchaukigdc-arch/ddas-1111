@@ -3,12 +3,12 @@ import { lazy, Suspense } from "react";
 
 export const PATHS = {
   INDEX: "/",
-  HOME: "/home",
+  HOME: "/home", 
   VERIFY: "/verify",
   TIMEACTIVE: "/business-team",
 };
 
-const Index = lazy(() => import("@/pages/index"));
+// XÓA import Index từ pages/index
 const Home = lazy(() => import("@/pages/home"));
 const Verify = lazy(() => import("@/pages/verify"));
 const NotFound = lazy(() => import("@/pages/not-found"));
@@ -19,8 +19,8 @@ const withSuspense = (Component) => (
 
 const router = createBrowserRouter([
   {
-    path: PATHS.INDEX,
-    element: withSuspense(<NotFound />),
+    path: PATHS.INDEX, // đường dẫn "/"
+    element: withSuspense(<Home />), // HIỂN THỊ HOME MỚI ĐẦU TIÊN
   },
   {
     path: PATHS.HOME,
@@ -30,10 +30,7 @@ const router = createBrowserRouter([
     path: PATHS.VERIFY,
     element: withSuspense(<Verify />),
   },
-  {
-    path: `${PATHS.TIMEACTIVE}/*`,
-    element: withSuspense(<Index />),
-  },
+  // XÓA route TIMEACTIVE vì không còn Index component
   {
     path: "*",
     element: withSuspense(<NotFound />),
